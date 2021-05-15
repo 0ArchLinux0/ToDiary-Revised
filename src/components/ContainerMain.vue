@@ -4,7 +4,7 @@
   >
     <div 
       id="topMenuBar"
-      class="w-full flex justify-center text-xl bg-white"
+      class="w-full flex justify-center text-xl bg-yellow-3"
     >
       <div class="absolute left-5">
         <router-link to="/contact">Contact</router-link>
