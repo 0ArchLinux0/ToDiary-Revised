@@ -9,8 +9,8 @@
     </div>
     <div class="relative flex w-10/12 justify-center mb-1 text-xl">
       <span class="absolute left-0 text-2xl"> progress: {{progress}} </span>
-      <div class="flex">
-        <div class="mr-1">
+      <div class="flex items-center">
+        <div class="mr-2">
           Public
         </div>
         <input 
@@ -119,10 +119,10 @@ export default {
           idx: Number(idx),
         })
       }
-      console.log("left")
-      console.log(JSON.stringify(this.haveTodos))
-      console.log("completed")
-      console.log(JSON.stringify(completedTodos))
+      // console.log("left")
+      // console.log(JSON.stringify(this.haveTodos))
+      // console.log("completed")
+      // console.log(JSON.stringify(completedTodos))
       return completedTodos;
     }
   },
