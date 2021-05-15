@@ -34,7 +34,7 @@ export default {
     },
   },
   mounted() {
-    console.log("memo")
+    // console.log("memo")
   }
 }
 </script>

@@ -86,19 +86,19 @@ export default {
     },
     focusTriggered(index) {
       // console.log(index);
-      console.log('called' + index);
+      // console.log('called' + index);
       // this[`inputRapper${index}Onfocus`] = true;
       this[`inputRapper${index}Onfocus`] = !this[`inputRapper${index}Onfocus`];
       // console.log(this.inputRapper1Onfocus);
       // console.log(this.inputRapper2Onfocus);
     },
     login() {
-      console.log(this.user_id + ", " + this.user_pw);
-      AccountService.login({ id: this.user_id, pw: this.user_pw }).then((result) => {
-        console.log(result);
+      // console.log(this.user_id + ", " + this.user_pw);
+      AccountService.login({ id: this.user_id, pw: this.user_pw }).then(() => {
+        // console.log(result);
         this.$router.push({ name : "Home" })
-      }).catch((err) => {
-        console.log(err)
+      }).catch(() => {
+        // console.log(err)
         this.loginerror = true;
       });
     },

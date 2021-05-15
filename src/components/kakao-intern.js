@@ -14,7 +14,7 @@ const disInfo = Array(n).fill(null).map(() => Array(n).fill(Infinity));
 for(const road of roads) {
   if(disInfo[road[0]-1][road[1]-1] > road[2]) disInfo[road[0]-1][road[1]-1] = road[2];
 }
-console.log(disInfo)
+// console.log(disInfo)
 
 // const disFromBasis = Array(n).fill(null).map(() => Array(2).fill(null)); //[1] is reversed
 const disFromBasis = Array(n).fill(null); 
@@ -41,7 +41,7 @@ const additionalDis = (node) => {
       min = disInfo[trap][node]
     }
   }
-  console.log("add: " + min)
+  // console.log("add: " + min)
   return min;
 }
 

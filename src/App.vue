@@ -13,6 +13,23 @@ export default {
   components: {
     // Memo
   },
+  mounted() {
+    const googleLoginApi = document.createElement("script");
+    googleLoginApi.setAttribute(
+      "src",
+      "https://apis.google.com/js/platform.js"
+    );
+    googleLoginApi.addEventListener("load", () => {
+      window.gapi.load("auth2", () => {
+        window.gapi.auth2.init({
+          client_id:
+            "315991053717-jn2059hcfd4rirair5iadk7lsasn3rba.apps.googleusercontent.com",
+          cookiepolicy: "single_host_origin",
+        });
+      });
+    });
+    document.head.appendChild(googleLoginApi);
+  },
   data() {
     return {
       mobile: false,

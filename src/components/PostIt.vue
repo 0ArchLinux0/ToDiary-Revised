@@ -7,13 +7,30 @@
       <div
         v-if="!initial"
         ref="postIt"
-        class="relative w-10/12 h-4/6 text-2xl px-2 z-20 flex justify-start items-center"
-        :class="{'shadowShort': !initial}"
-        style="text-align:left;background:linear-gradient(to right, #BFDBFE, #b1d4ff);"
+        class="relative w-10/12 h-4/6 text-2xl px-2 z-20 flex items-center gradient overflowClass wheel"
+        :class="{
+          'shadowShort': !initial,
+          'justify-start': !textCenter,
+          'justify-center': textCenter
+        }"
         :style="{'text-decoration': completed ? 'line-through' : 'none'}"
+        style="white-space:nowrap;"
         @click="togglePostIt"
       >
         <span>{{newMemo}}</span>
+      </div>
+      <div
+        v-if="!initial"
+        class="absolute bg-blue-300 w-5 h-5 rounded-lg flex justify-center items-center"
+        style="right:95%;"
+        :style="{
+          'top':`${postitH * 1/7}rem`,
+          'text-decoration': completed ? 'line-through' : 'none'
+        }"
+        @click="postToList"
+      >
+        <!-- :class="{'lineThrough': completed}" -->
+        {{keyIdx}}
       </div>
       
       <div
@@ -22,14 +39,18 @@
       >
         <div
           ref="postIt"
-          class="relative flex justify-start items-center w-10/12 h-4/6 text-2xl px-2 z-20"
-          :class="{'shadowShort': !initial}"
-          style="text-align:left;background:linear-gradient(to right, #BFDBFE, #b1d4ff);"
+          class="relative flex items-center w-10/12 h-4/6 text-2xl px-2 z-20 gradient"
+          :class="{
+          'shadowShort': !initial,
+          'justify-start': !textCenter,
+          'justify-center': textCenter
+        }"
         >
+        <!-- style="line-break: strict; -->
           <textarea
             ref="ta"
-            class="w-full h-full text-2xl"
-            style="line-break: strict;background:transparent;"
+            class="w-full h-full text-2xl wheel overflowClass pt-1"
+            style="background:transparent;white-space:nowrap;vertical-align:center"
             v-model="newMemo"
             :disabled="!initial"
             placeholder="new memo!"
@@ -37,6 +58,8 @@
             type="text"
             rows=2
             maxlength="62"
+            @keydown.enter.exact.prevent
+            @keydown.enter="enter"
           />
         </div>
         <div
@@ -69,7 +92,7 @@
           style="left:91.6666%;"
         />
         <div
-          class="absolute bg-yellow-200 w-5 h-5 "
+          class="absolute bg-red-300 w-5 h-5 "
           style="left:95%; border-radius: 50%"
           :style="{'top':`${postitH * 2/7}rem`}"
           @click="postToList"
@@ -106,6 +129,10 @@ export default {
     postitH: {
       type: Number,
       default:4,
+    },
+    textCenter: {
+      type: Boolean,
+      default: false,
     }
   },
   methods: {
@@ -119,6 +146,10 @@ export default {
     togglePostIt() {
       console.log('toggle '+this.keyIdx)
       this.$emit('toggletodo', this.keyIdx)
+    },
+    enter() {
+      console.log("enter")
+      this.postToList();
     }
   },
   mounted() {
@@ -145,6 +176,17 @@ export default {
       this.$refs.postIt.classList.add('postIt');
       // this.$refs.postIt.classList.add('priorityMoveToLeft');
     }
+    this.$refs.postIt.addEventListener('wheel', event => {
+      const toLeft  = 
+        event.deltaY < 0 && this.$refs.postIt.scrollLeft > 0
+      const toRight = 
+        event.deltaY > 0 && 
+        this.$refs.postIt.scrollLeft < this.$refs.postIt.scrollWidth - this.$refs.postIt.clientWidth
+      if (toLeft || toRight) {
+        event.preventDefault()
+        this.$refs.postIt.scrollLeft += event.deltaY
+      }
+    })
   },
   data() {
     return {
@@ -193,11 +235,29 @@ input:focus {
   transform: skewY(45deg)  translateY(0.35rem);
   background-color: #a0cbff;
 }
+/* .lineThrough {
+  text-decoration: line-through;
+  text-decoration-color: rgb(247, 132, 132);
+} */
+.gradient {
+  text-align:left;
+  background:linear-gradient(45deg, #BFDBFE, #9cc9ff);
+  /* background:linear-gradient(45deg, #9cc9ff, #BFDBFE); */
+}
+.overflowClass {
+  overflow: auto;
+  overflow-y: hidden;
+}
+/* .overflowClass:focus {
+  overflow: auto;
+  overflow-y: hidden;
+} */
 textarea {
   resize: none;
 }
 ::-webkit-scrollbar {
   width: 6px;
+  height: 9px;
   border-radius: 4px;
   cursor: pointer;
   background-color: none;
@@ -212,5 +272,10 @@ textarea {
   opacity: 0;
   background-color: rgb(122, 168, 221);
   border-radius: 4px;
+}
+.pallete {
+  transform: skewY(45deg)  translateY(0.35rem);
+  background-color: #7ab6ff;
+  background-color: #a0cbff;
 }
 </style>

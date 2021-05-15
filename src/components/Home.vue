@@ -1,11 +1,11 @@
 <template>
   <div 
     class="flex flex-col justify-start items-center w-full"
-    style="padding-top: 10%"  
+    style="padding-top: 20%"  
   >
     <div
       v-for="(menu, idx) in menus"
-      class="pointer w-1/4"
+      class="pointer w-1/2"
       :key="`menu-${idx}`"
       @click="move(menu)"
     >
@@ -14,6 +14,9 @@
       >
         <PostIt
           :body="menu"
+          :postitH="6"
+          :keyIdx="idx+1"
+          :textCenter="true"
           :completed="false"
         />
       </div>
@@ -36,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    console.log("memo")
+    // console.log("memo")
   },
   data() {
     return {

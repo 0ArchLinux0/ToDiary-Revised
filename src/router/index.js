@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import ContainerMain from '../components/ContainerMain.vue'
 import Memo from '../components/Memo.vue'
 import TodoList from '../components/TodoList.vue'
+import Register from '../components/Register.vue'
 import Contact from '../components/Contact.vue'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
@@ -36,8 +37,14 @@ const routes = [
         path: 'login',
         component: Login
       },
+      {
+        name: 'Register',
+        path: 'register',
+        component: Register
+      }
     ]
   },
+  
   // },
 ]
 // export default router

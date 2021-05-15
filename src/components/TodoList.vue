@@ -21,8 +21,8 @@
       </div>
       <!-- <div class="absolute w-full flex justify-end items-center"> -->
         <button
-          class="absolute right-0 bg-blue-400 px-4"
-          style="border-radius: 2px; rem;"
+          class="absolute right-0 bg-blue-300 px-4"
+          style="border-radius: 3px; rem;"
           @click="save"
         >
           save
@@ -119,16 +119,11 @@ export default {
           idx: Number(idx),
         })
       }
-      // console.log("left")
-      // console.log(JSON.stringify(this.haveTodos))
-      // console.log("completed")
-      // console.log(JSON.stringify(completedTodos))
       return completedTodos;
     }
   },
   methods: {
     addToList(todo) {
-      console.log("event emited")
       this.todos.push({
         todo: todo,
         completed: false,
@@ -139,9 +134,6 @@ export default {
       this.inputActive = true;
     },
     toggletodo(idx) {
-      console.log("toggled " + idx)
-      console.log(this.todos[idx])
-      // console.log('idx'+idx)
       this.todos[idx]["completed"] = !this.todos[idx].completed;
     }
   },
