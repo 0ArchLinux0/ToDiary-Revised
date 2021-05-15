@@ -41,6 +41,7 @@ body, #app {
   color: #2c3e50;
   background-color: #FBF7EE;
   height: 100%;
+  user-select: none;
 }
 *:focus {
   border: none;

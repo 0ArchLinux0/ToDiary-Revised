@@ -1,8 +1,15 @@
 <template>
   <div 
-    class="fixed w-full h-10"
+    class="fixed w-full"
   >
-    <button @click="toHome()">home</button>
+    <div 
+      id="topMenuBar"
+      class="w-full flex justify-center text-xl bg-white"
+    >
+      <button class="absolute left-5" @click="toHome()">Contact</button>
+      <button @click="toHome()">Home</button>
+      <button class="absolute right-5" @click="toHome()">Login</button>
+    </div>
     <router-view
       :mobile="mobile"
     />
