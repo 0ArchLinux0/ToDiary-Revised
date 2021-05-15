@@ -1,20 +1,32 @@
 <template>
-  <div class="flex flex-col justify-start items-center w-full h-full pt-10">
-    <!-- <a href="/todo"> Todo </a>
-    <a href="/memo"> Memo </a> -->
+  <div 
+    class="flex flex-col justify-start items-center w-full"
+    style="padding-top: 10%"  
+  >
     <div
       v-for="(menu, idx) in menus"
-      class="pointer"
+      class="pointer w-1/4"
       :key="`menu-${idx}`"
       @click="move(menu)"
     >
-      {{menu}}
+      <div
+        class="mb-10"
+      >
+        <PostIt
+          :body="menu"
+          :completed="false"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script>
+import PostIt from '../components/PostIt.vue'
 export default {
   name: 'Home',
+  components: {
+    PostIt,
+  },
   props: {
     msg: String
   },

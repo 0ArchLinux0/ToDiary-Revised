@@ -39,7 +39,11 @@ body, #app {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #FBF7EE;
+  /* background-color: #FBF7EE; */
+  background-image: url("assets/lined-note.jpg");
+  background-repeat: no-repeat;
+  /* background-size: contain; */
+  background-size: 100% 100%;
   height: 100%;
   user-select: none;
 }

@@ -2,6 +2,8 @@ import { createWebHistory, createRouter } from 'vue-router'
 import ContainerMain from '../components/ContainerMain.vue'
 import Memo from '../components/Memo.vue'
 import TodoList from '../components/TodoList.vue'
+import Contact from '../components/Contact.vue'
+import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 
 const routes = [
@@ -16,50 +18,26 @@ const routes = [
       },
       { 
         name: 'Memo',
-        path: '/memo', 
+        path: 'memo', 
         component: Memo,
       },
       { 
         name: 'TodoList',
-        path: '/todo', 
+        path: 'todo', 
         component: TodoList,
       },
-      // {
-      //   name: 'ReactionTime',
-      //   path: '/reaction-time',
-      //   component: ReactionTime
-      // },
-      // {
-      //   name: 'NumberMemory',
-      //   path: '/memory/number',
-      //   component: NumberMemory
-      // },
-      // {
-      //   name: 'MentalArithmetic',
-      //   path: '/mental-arithmetic',
-      //   component: MentalArithmetic
-      // },
+      {
+        name: 'Contact',
+        path: 'contact',
+        component: Contact
+      },
+      {
+        name: 'Login',
+        path: 'login',
+        component: Login
+      },
     ]
   },
-  // {
-  //   name: 'Home',
-  //   path: '/',
-  //   component: Home
-  // },
-  // { 
-  //   name: 'Memo',
-  //   path: '/memo', 
-  //   component: Memo,
-  // },
-  // { 
-  //   name: 'TodoList',
-  //   path: '/todo', 
-  //   component: TodoList,
-  // },
-  // { 
-  //   name: 'Register',
-  //   path: '/register', 
-  //   component: Registration,
   // },
 ]
 // export default router

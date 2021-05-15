@@ -2,7 +2,7 @@
   <div class="flex flex-col justify-start items-center w-full h-full">
     <div 
       id="title" 
-      class="flex justify-center bg-red-200 items-center text-4xl shadowShort mt-2"
+      class="flex justify-center bg-red-200 items-center px-3 text-4xl shadowShort mt-2"
       style="margin-bottom: 3.5%"
     >
       todo checklist

@@ -6,9 +6,16 @@
       id="topMenuBar"
       class="w-full flex justify-center text-xl bg-white"
     >
-      <button class="absolute left-5" @click="toHome()">Contact</button>
-      <button @click="toHome()">Home</button>
-      <button class="absolute right-5" @click="toHome()">Login</button>
+      <div class="absolute left-5">
+        <router-link to="/contact">Contact</router-link>
+      </div>
+      <router-link to="/">Home</router-link>
+      <div class="absolute right-5">
+        <router-link to="/login">Login</router-link>
+      </div>
+      <!-- <button class="absolute left-5" @click="navigate('Contact')">Contact</button> -->
+      <!-- <button @click="navigate('Home')">Home</button> -->
+      <!-- <button class="absolute right-5" @click="navigate('Login')">Login</button> -->
     </div>
     <router-view
       :mobile="mobile"
@@ -22,8 +29,8 @@ export default {
     msg: String
   },
   methods: {
-    toHome() {
-      this.$router.push({ path: '/' });
+    navigate(name) {
+      this.$router.push({ name: `${name}` });
     },
   },
   mounted() {
