@@ -3,7 +3,7 @@
     <div 
       id="title" 
       class="flex justify-center items-center text-4xl "
-      style="margin-bottom: 10%"
+      style="margin-bottom: 30vh"
     >
       Login
     </div>

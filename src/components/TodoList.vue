@@ -40,8 +40,8 @@
     </div>
     <div
       class="relative w-full text-xl my-5"
+      style="min-height: 200px"
     >
-      <!-- style="min-height: 200px" -->
       ---------Have to do---------
       <div
         v-for="todo of haveTodos"

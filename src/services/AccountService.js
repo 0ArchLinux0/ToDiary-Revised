@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-let baseURL = `http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1000`;
-// let baseURL = `http://localhost:2083`
+// let baseURL = `http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1000`;
+let baseURL = `http://localhost:2083`
 
 const headers = {
   "Access-Control-Allow-Origin": "*",

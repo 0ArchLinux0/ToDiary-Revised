@@ -241,7 +241,8 @@ input:focus {
 } */
 .gradient {
   text-align:left;
-  background:linear-gradient(45deg, #BFDBFE, #9cc9ff);
+  /* background:linear-gradient(30deg, #BFDBFE, #9cc9ff); */
+  background:linear-gradient(30deg, #bad8fc, #9cc9ff);
   /* background:linear-gradient(45deg, #9cc9ff, #BFDBFE); */
 }
 .overflowClass {
