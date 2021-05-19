@@ -52,14 +52,13 @@
             class="w-full h-full text-2xl wheel overflowClass pt-1"
             style="background:transparent;white-space:nowrap;vertical-align:center"
             v-model="newMemo"
-            :disabled="!initial"
-            placeholder="new memo!"
+            :placeholder="body"
             :spellcheck="false"
             type="text"
             rows=2
             maxlength="62"
             @keydown.enter.exact.prevent
-            @keydown.enter="enter"
+            @keydown.enter="postToList"
           />
         </div>
         <div
@@ -94,15 +93,20 @@
         <div
           class="absolute bg-red-300 w-5 h-5 "
           style="left:95%; border-radius: 50%"
-          :style="{'top':`${postitH * 2/7}rem`}"
+          :style="{
+            'top':`${postitH * 2/7}rem`,
+          }"
           @click="postToList"
         >
+            <!-- 'border-radius': `${buttonName ? 10 : 50}%` -->
+          <!-- {{ buttonName ? buttonName : '+' }} -->
           +
         </div>
       </div>
     </div>
 </template>
 <script>
+// import { bus } from '../main'
 export default {
   name: 'PostIt',
   props: {
@@ -122,6 +126,10 @@ export default {
       type: Number,
       default: -1,
     },
+    buttonName: {
+      type: String,
+      default: '',
+    },
     completed: {
       type: Boolean,
       default: false,
@@ -133,6 +141,16 @@ export default {
     textCenter: {
       type: Boolean,
       default: false,
+    },
+    textConfirmed: {
+      type: Boolean,
+      default: false,
+    }
+  },
+  watch: {
+    newMemo(newVal) {
+      console.log(newVal.length);
+      if(this.textConfirmed === true) this.$emit('textchanged');
     }
   },
   methods: {
@@ -147,14 +165,16 @@ export default {
       console.log('toggle '+this.keyIdx)
       this.$emit('toggletodo', this.keyIdx)
     },
-    enter() {
-      console.log("enter")
+    submit() {
       this.postToList();
-    }
+      this.$emit('getBody', this.newMemo);
+      //this.newMemo = '';
+    },
+
   },
   mounted() {
-    this.newMemo = this.body;
     if(!this.initial) {
+      this.newMemo = this.body;
       this.$refs.postIt.classList.add('priorityMoveToLeft');
       this.$refs.postIt.addEventListener('transitionend', () => {
         this.$emit('added');
@@ -164,10 +184,11 @@ export default {
       })
     } else {
       this.$refs.postIt.addEventListener('transitionend', () => {
-        this.$emit('addToList', this.newMemo);
-        this.newMemo = ''
         this.$refs.postIt.classList.remove('postIt');
         this.$refs.postIt.classList.remove('moveToLeft');
+        console.log(this.newMemo);
+        this.$emit('addToList',this.newMemo);
+        this.newMemo = '';
         setTimeout(() => this.$refs.postIt.classList.add('postIt'));
 
         // console.log("!!!!!!!!")
@@ -187,7 +208,15 @@ export default {
         this.$refs.postIt.scrollLeft += event.deltaY
       }
     })
+    // console.log(bus);
+    // bus.$on('submit', () => {
+      // this.postToList();
+      // console.log('bus on submit');
+    // })
   },
+  // beforeUnmount() {
+    // bus.$off('submit');
+  // },
   data() {
     return {
       newMemo: '',

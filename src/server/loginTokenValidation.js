@@ -33,7 +33,7 @@ function getAccountWithEmail(email) {
     dbManager
       .get('/exists', {
         params: {
-          email,
+          filter: { email },
           dbname: 'userdata',
           collection: 'accounts'
         }

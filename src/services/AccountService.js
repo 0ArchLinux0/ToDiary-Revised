@@ -25,6 +25,12 @@ export default {
       },
     });
   },
+  exists(query) {
+    return apiClient.post(`${baseURL}/exists`, query);
+  },
+  setAccountData(dataToSet) {
+    return apiClient.post(`${baseURL}/accountdata`, dataToSet);
+  },
   requestGoogleLogin() {
     return new Promise((resolve, reject) => {
       if (window.gapi && window.gapi.auth2) {
@@ -42,14 +48,19 @@ export default {
                 loginAttemptType: "google",
               })
                 .then(({ data }) => {
-                  if (data === 'register') resolve('register')
+                  console.log(data);
+                  if (data === 'register') resolve(
+                    {
+                      mode:'register',
+                      email: userEmail,
+                    })
                   else if (data.accountType == "google")
                     resolve({ ...data, googleAccessToken });
                   else reject({ message: "account type err" });
                 })
                 .catch((e) => {
                   console.log(e)
-                  reject({ userEmail, message: "not registered" });
+                  reject({ userEmail, message: "error" });
                 });
               // resolve({email: userEmail, googleAccessToken})
             })

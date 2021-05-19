@@ -29,12 +29,6 @@ app.post("/writeone",((req, res, next) => {
 	const dbname = data.dbname;
 	const collection = data.collection; 
 	const toWrite = data.toWrite;
-  const name = toWrite.name;
-  const email = toWrite.email;
-  const password = toWrite.password;
-  // console.log(name);
-  // console.log(email);
-  // console.log(password);
 	db[dbname]
 		.collection(collection)
 		.insertOne({...toWrite})
@@ -49,9 +43,9 @@ app.get("/exists",((req, res, next) => {
 	const data = req.query;
 	const dbname = data.dbname;
 	const collection = data.collection;
-	const email = data.email;
-	console.log(email);
-	db[dbname].collection(collection).findOne({ "email": email }, (err, accountData) => {
+	const filter = data.filter;
+	console.log(filter);
+	db[dbname].collection(collection).findOne(filter, (err, accountData) => {
 			if(err) res.sendStatus(404);
 			else {
 				if(accountData) res.send(accountData);

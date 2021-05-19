@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col justify-start items-center w-full h-full pt-10">
-    <div 
+  <div class="flex flex-col justify-center items-center w-full pt-10">
+    <!-- <div 
       id="title" 
       class="flex justify-center bg-red-200 items-center text-4xl "
       style="margin-bottom: 15%"
@@ -12,6 +12,11 @@
       style="minHeight: 55%; text-align:left;"
     >
       body
+    </div> -->
+    <div class="absolute text-4xl"
+      style="top:40vh"
+    >
+      Unavailable yet
     </div>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div 
     class="flex flex-col justify-start items-center w-full"
-    style="padding-top: 20%"  
+    style="padding-top: 16%"  
   >
     <div
       v-for="(menu, idx) in menus"
@@ -35,15 +35,24 @@ export default {
   },
   methods: {
     move(menu) {
+      // if(user)
       this.$router.push({ path: `/${menu}` })
     }
   },
   mounted() {
-    // console.log("memo")
+    // console.log(this.$route.params);
+    if(this.$route.params.pushedAfter === 'registered') {
+      // console.log("pushed from register page");
+      this.congratulate = true;
+    }
+    console.log('store');
+    // console.log();
   },
   data() {
     return {
-      menus: ["todo", "memo"]
+      // menus: ["todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo",]
+      menus: ["todo", "memo"],
+      congratulate: false,
     }
   }
 }

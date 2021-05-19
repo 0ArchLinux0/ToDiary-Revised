@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col justify-start items-center w-full h-full">
+  <div class="flex flex-col justify-start items-center w-full">
     <div 
       id="title" 
       class="flex justify-center bg-red-200 items-center px-3 text-4xl shadowShort mt-2"
@@ -39,43 +39,48 @@
       />
     </div>
     <div
-      class="relative w-full text-xl my-5"
-      style="min-height: 200px"
+      v-if="todos.length"
+      class="w-full"
     >
-      ---------Have to do---------
       <div
-        v-for="todo of haveTodos"
-        :key="`haveTodo-${todo.idx}`"
-        class="relative w-full"
+        class="relative w-full text-xl my-5"
+        style="min-height: 200px"
       >
-      <!-- bg-red-300 -->
-        <PostIt
-          :body="todo.todo"
-          :keyIdx="todo.idx"
-          :completed="false"
-          @added="added"
-          @toggletodo="toggletodo"
-        />
+        ---------Have to do---------
+        <div
+          v-for="todo of haveTodos"
+          :key="`haveTodo-${todo.idx}`"
+          class="relative w-full"
+        >
+        <!-- bg-red-300 -->
+          <PostIt
+            :body="todo.todo"
+            :keyIdx="todo.idx"
+            :completed="false"
+            @added="added"
+            @toggletodo="toggletodo"
+          />
+        </div>
       </div>
-    </div>
 
-    <div
-      class="relative w-full text-xl mt-5"
-    >
-      <!-- style="min-height: 200px" -->
-      ---------Completed!---------
       <div
-        v-for="todo of completedTodos"
-        :key="`complete-${todo.idx}`"
-        class="relative w-full"
+        class="relative w-full text-xl mt-5"
       >
-        <PostIt
-          :body="todo.todo"
-          :keyIdx="todo.idx"
-          :completed="true"
-          @added="added"
-          @toggletodo="toggletodo"
-        />
+        <!-- style="min-height: 200px" -->
+        ---------Completed!---------
+        <div
+          v-for="todo of completedTodos"
+          :key="`complete-${todo.idx}`"
+          class="relative w-full"
+        >
+          <PostIt
+            :body="todo.todo"
+            :keyIdx="todo.idx"
+            :completed="true"
+            @added="added"
+            @toggletodo="toggletodo"
+          />
+        </div>
       </div>
     </div>
       
@@ -83,6 +88,7 @@
 </template>
 <script>
 import PostIt from '../components/PostIt.vue'
+// import AccountService from "@/services/AccountService.js"
 // import Vue from "vue";
 export default {
   name: 'TodoList',
@@ -123,7 +129,12 @@ export default {
     }
   },
   methods: {
+    save() {
+      // console.log(this.todos)
+      // AccountService.saveTodoList()
+    },
     addToList(todo) {
+      console.log(todo);
       this.todos.push({
         todo: todo,
         completed: false,

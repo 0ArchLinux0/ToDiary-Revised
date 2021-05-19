@@ -43,9 +43,9 @@ export default {
   font-family: 'HiMelody-Regular';
   src: url(./assets/HiMelody-Regular.ttf) format('truetype'); 
 }
-body, #app {
+body {
   position: relative;
-  height: 100vh;
+  /* min-height: 100vh; */
   min-width: 400px
   /* background-color: yellowgreen;  */
 }
@@ -56,17 +56,37 @@ body, #app {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* background-color: #FBF7EE; */
+  /* background-color: #fdeec6; */
   background-image: url("assets/lined-note.jpg");
-  background-repeat: no-repeat;
+  /* background-image: url("assets/pinboard.jpg"); */
+  background-repeat: repeat-y;
+  min-height: 100vh;
   /* background-size: contain; */
-  background-size: 100% 100%;
-  height: 100%;
+  background-size: 100%;
   user-select: none;
 }
 *:focus {
   border: none;
   outline: none;
   user-select: none;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  /* height: 9px; */
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: white;
+  opacity: 0.1
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+::-webkit-scrollbar-thumb {
+  /* overflow: overlay; */
+  height: 2px;
+  opacity: 0;
+  /* background-color: rgb(154, 235, 255); */
+  background-color: rgba(0, 0, 0, 0.445);
+  border-radius: 4px;
 }
 </style>

@@ -15,14 +15,28 @@
       </div>
       <div v-else class="flex w-full h-full px-7 justify-between">
         Login view
+      
       </div> -->
-      <button 
-        @click="goRegisteration" 
-        class="buttonbox bg-blue-300 px-2 rounded-lg"
-      > 
-        register
-      </button>
-      <div 
+      <table class="text-xl">
+        <th></th>
+        <tr>
+          <button 
+            @click="goRegisteration" 
+            class="buttonbox bg-blue-300 px-2 rounded-lg mb-4"
+          > 
+            register
+          </button>
+        </tr>
+        <tr>
+          <button 
+          class="w-full buttonbox bg-blue-300 px-2 rounded-lg" 
+          @click="googleLoginRequest" 
+        >
+          login 
+        </button>
+        </tr>
+      </table>
+      <!-- <div 
         class="h-10 border-2 border-white my-3 flex justify-center items-center"
         :class="{'w-1/3': mobile, 'w-1/4': !mobile}"
         :style="{'border-color': inputRapper1Onfocus ? 'lightgreen' : 'white'}"
@@ -37,8 +51,8 @@
           class="block w-10/12 inputbox "
           style="spellcheck:false;"
         />
-      </div>
-      <div 
+      </div> -->
+      <!-- <div 
         class="h-10 border-2 border-white my-3 flex justify-center items-center"
         :class="{'w-1/3': mobile, 'w-1/4': !mobile}"
         :style="{'border-color': inputRapper2Onfocus ? 'lightgreen' : 'white'}">
@@ -53,15 +67,13 @@
           class="block w-10/12 inputbox "
           style="spellcheck:false;"
         />
-      </div>
-      <div @click="login" class="buttonbox bg-blue-300 px-2 rounded-lg"> 
-        Login 
-      </div>
+      </div> -->
       <div 
         v-if="loginerror" 
-        style="color:lightgreen;"
+        class="text-2xl"
+        style="color:red;"
       > 
-        Wrong password or not registered email 
+        {{ errorMsg }}
       </div>
     </div>
   </div>
@@ -92,15 +104,35 @@ export default {
       // console.log(this.inputRapper1Onfocus);
       // console.log(this.inputRapper2Onfocus);
     },
-    login() {
-      // console.log(this.user_id + ", " + this.user_pw);
-      AccountService.login({ id: this.user_id, pw: this.user_pw }).then(() => {
-        // console.log(result);
-        this.$router.push({ name : "Home" })
-      }).catch(() => {
-        // console.log(err)
-        this.loginerror = true;
-      });
+    googleLoginRequest() {
+      AccountService.requestGoogleLogin()
+        .then((data) => {
+          console.log(data);
+          if(data.mode === 'register') {
+            this.processRegisteration = true;
+            this.email = data.email;
+            this.loginAttemptErrMsg = '';
+            this.loginerror = true;
+            this.errorMsg = 'You have to register first!'
+          } else if(data.accountType == 'google') {
+            this.loginerror = false;
+            this.errorMsg = '';
+            this.$store.dispatch("AccountModule/updateUserInfo",  {
+              email: data.email,
+              nickname: data.nickname,
+            });
+            this.$router.push({name: "Home"});
+          } 
+          else {  //TODO Handle unhandled case
+            this.loginerror = true;
+            this.errorMsg = 'Error occured. Please try again'
+          }
+        })
+        .catch(() => {
+          this.errorMsg = 'Error occured. Please try again';
+          this.loginerror = true;
+        })
+      // this.processRegisteration = true;
     },
     goRegisteration() {
       this.$router.push({ name: "Register" });
@@ -110,11 +142,12 @@ export default {
   },
   data() {
     return {
-      inputRapper1Onfocus: false,
-      inputRapper2Onfocus: false,
+      // inputRapper1Onfocus: false,
+      // inputRapper2Onfocus: false,
       user_id: '',
       user_pw: '',
       loginerror: false,
+      errorMsg: '',
     };
   },
 }
@@ -127,4 +160,18 @@ export default {
   cursor: pointer;
   color: greenyellow;
 }
+*:focus {
+  border: none;
+  outline: none;
+}
+/* table { */
+  /* border: 1px solid black; */
+/* } */
+/* th,td {
+  padding: 0px 4px;
+  border: 1px solid black;
+} */
+/* tr {
+  border: 1px solid black;
+} */
 </style>

@@ -49,10 +49,15 @@ app.get("/exists",((req, res, next) => {
 	const data = req.query;
 	const dbname = data.dbname;
 	const collection = data.collection;
-	const email = data.email;
-	console.log(email);
-	db[dbname].collection(collection).findOne({ "email": email }, (err, accountData) => {
-			if(err) res.sendStatus(404);
+	console.log(typeof data.filter);
+	const filter = JSON.parse(data.filter);
+	console.log(filter);
+	db[dbname].collection(collection).findOne(filter, (err, accountData) => {
+			console.log(accountData);
+			if(err) {
+				res.sendStatus(404);
+				console.log(err);
+			}
 			else {
 				if(accountData) {
           console.log(accountData)
