@@ -62,7 +62,7 @@ body {
   background-repeat: repeat-y;
   min-height: 100vh;
   /* background-size: contain; */
-  background-size: 100%;
+  background-size: 100vw 100vh;
   user-select: none;
 }
 *:focus {
