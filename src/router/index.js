@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import ContainerMain from '../components/ContainerMain.vue'
 import Memo from '../components/Memo.vue'
 import TodoList from '../components/TodoList.vue'
+import Policy from '../components/Policy.vue'
 import MyPage from '../components/MyPage.vue'
 import Register from '../components/Register.vue'
 import Contact from '../components/Contact.vue'
@@ -47,7 +48,13 @@ const routes = [
         name: 'Register',
         path: 'register',
         component: Register
-      }
+      },
+      {
+        name: 'Policy',
+        path: 'policy',
+        component: Policy
+      },
+      
     ]
   },
   

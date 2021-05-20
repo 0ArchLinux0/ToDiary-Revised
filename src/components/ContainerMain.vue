@@ -9,6 +9,7 @@
       >
         <div class="absolute left-5 hoverClass">
           <router-link to="/contact">Contact</router-link>
+          <!-- <router-link to="/policy">Policy</router-link> -->
         </div>
         <div class="hoverClass">
           <router-link to="/">Home</router-link>
@@ -46,6 +47,11 @@
     </div> 
     <router-view
     />
+    <!-- absolute left-5 -->
+    <div class="absolute w-full bottom-0 hoverClass text-xl">
+      <!-- <router-link to="/contact">Contact</router-link> -->
+      <router-link to="/policy">Policy</router-link>
+    </div>
   </div>
 </template>
 <script>

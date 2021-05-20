@@ -23,7 +23,8 @@ export default {
       window.gapi.load("auth2", () => {
         window.gapi.auth2.init({
           client_id:
-            "315991053717-jn2059hcfd4rirair5iadk7lsasn3rba.apps.googleusercontent.com",
+            // "315991053717-jn2059hcfd4rirair5iadk7lsasn3rba.apps.googleusercontent.com",
+            "514881335774-b310bt147k6kfv6m9lfc1h11295pnlcs.apps.googleusercontent.com",
           cookiepolicy: "single_host_origin",
         });
       });
