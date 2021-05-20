@@ -39,7 +39,7 @@ app.post("/writeone",((req, res, next) => {
 		.catch(err => res.sendStatus(404));
 }));
 
-app.get("/exists",((req, res, next) => {
+app.get("/readone",((req, res, next) => {
 	const data = req.query;
 	const dbname = data.dbname;
 	const collection = data.collection;

@@ -36,6 +36,7 @@ export default {
   methods: {
     move(menu) {
       // if(user)
+      if(menu == 'memo(will be ready soon...)') return;
       this.$router.push({ path: `/${menu}` })
     }
   },
@@ -46,12 +47,13 @@ export default {
       this.congratulate = true;
     }
     console.log('store');
+    console.log(this.$store.getters["AccountModule/userInfo"])
     // console.log();
   },
   data() {
     return {
       // menus: ["todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo",]
-      menus: ["todo", "memo"],
+      menus: ["todo", "memo(will be ready soon...)"],
       congratulate: false,
     }
   }

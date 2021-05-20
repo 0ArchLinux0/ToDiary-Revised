@@ -65,6 +65,9 @@ body {
   background-size: 100vw 100vh;
   user-select: none;
 }
+button:hover {
+  color: lightgreen;
+}
 *:focus {
   border: none;
   outline: none;

@@ -3,7 +3,8 @@ const express = require("express");
 const axios = require('axios');
 const loginTokenValidation = require('./loginTokenValidation');
 
-const dbManagerUrl = "http://localhost:1111";
+// const dbManagerUrl = "http://localhost:1111";
+const dbManagerUrl = "http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1111";
 const port = "2083"
 
 const app = express();
@@ -26,11 +27,11 @@ app.post('/login', (req, res) => {
     })
 })
 
-app.post('/exists', (req, res) => {
+app.post('/readone', (req, res) => {
   const query = req.body;
   // return new Promise((resolve, reject) => {
     dbManager
-      .get('/exists', {
+      .get('/readone', {
         params: {
           filter: query,
           dbname: 'userdata',
@@ -49,10 +50,11 @@ app.post('/exists', (req, res) => {
 app.post('/accountdata', (req, res) => {
   const dataToSet = req.body;
     dbManager
-      .post('/writeone', {
-          toWrite: dataToSet,
-          dbname: 'userdata',
-          collection: 'accounts'
+      .post('/updateone', {
+        dbname: 'userdata',
+        collection: 'accounts',
+        filter: { _id: dataToSet.oid },
+        toSet: dataToSet.toWrite,
       })
       .then(response => res.sendStatus(200))
       .catch((err) => {
@@ -60,6 +62,50 @@ app.post('/accountdata', (req, res) => {
         res.sendStatus(404)
       })
   // })
+})
+
+app.post('/content', (req, res) => {
+  const data = req.body;
+  console.log(data);
+  const { collection, contentInfo } = data;
+  dbManager
+    .post('writeone', data)
+    .then((response) => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log(err)
+      res.sendStatus(404)
+    });
+})
+
+app.post('/accountdata', (req, res) => {
+  const data = req.body;
+  dbManager
+    .post('updatone', { 
+      dbname: 'userdata',
+      collection: 'accounts',
+      filter: { _id: data.oid },
+      toSet: data.toSet,
+    }) 
+    .then((response) => {
+      res.send(response);
+    })
+    .catch((err) => res.sendStatus(404));
+})
+
+app.get('/accountdata', (req, res) => {
+  const data = req.query;
+  dbManager
+    .get('/readone', {
+      params: {
+        dbname: 'userdata',
+        collection: 'accounts',
+        filter: { _id: data.userOid },
+        toGrab: data.toGrab,
+      },
+    }).then(({ data }) => res.send(data))
+    .catch((err) => {console.log(err); res.sendStatus(404)});
 })
 
 

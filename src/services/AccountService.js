@@ -1,7 +1,8 @@
 const axios = require("axios");
 
-// let baseURL = `http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1000`;
-let baseURL = `http://localhost:2083`
+let baseURL = `http://ec2-52-79-233-153.ap-northeast-2.compute.amazonaws.com:2083`;
+ 
+// let baseURL = `http://localhost:2083`
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
@@ -25,11 +26,20 @@ export default {
       },
     });
   },
-  exists(query) {
-    return apiClient.post(`${baseURL}/exists`, query);
+  getInfo(userOid, toGrab) {
+    console.log(userOid);
+    return apiClient.get(`${baseURL}/accountdata`, {
+      params: {
+        userOid,
+        toGrab,
+      },
+    });
   },
-  setAccountData(dataToSet) {
-    return apiClient.post(`${baseURL}/accountdata`, dataToSet);
+  postContent(contentInfo) {
+    return apiClient.post(`${baseURL}/content`, contentInfo);
+  },
+  setAccountData(data) {
+    return apiClient.post(`${baseURL}/accountdata`, data);
   },
   requestGoogleLogin() {
     return new Promise((resolve, reject) => {

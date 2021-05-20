@@ -7,6 +7,8 @@ import './index.css'
 
 const app = createApp(App)
 
+app.config.globalProperties.initialDate = 
+  new Date('2021-05-19T00:00:00.000Z');
 app.use(router)
 app.use(store)
 app.mount('#app')

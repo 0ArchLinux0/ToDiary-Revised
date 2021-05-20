@@ -120,7 +120,9 @@ export default {
             this.$store.dispatch("AccountModule/updateUserInfo",  {
               email: data.email,
               nickname: data.nickname,
+              oid: data._id,
             });
+            
             this.$router.push({name: "Home"});
           } 
           else {  //TODO Handle unhandled case

@@ -31,7 +31,7 @@ function verifyToken(token, accountType) {
 function getAccountWithEmail(email) {
   return new Promise((resolve, reject) => {
     dbManager
-      .get('/exists', {
+      .get('/readone', {
         params: {
           filter: { email },
           dbname: 'userdata',

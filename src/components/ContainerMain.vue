@@ -7,19 +7,30 @@
         id="topMenuBar"
         class="w-full flex justify-center text-xl bg-yellow-3 pt-1"
       >
-        <div class="absolute left-5">
+        <div class="absolute left-5 hoverClass">
           <router-link to="/contact">Contact</router-link>
         </div>
-        <router-link to="/">Home</router-link>
-        <button 
+        <div class="hoverClass">
+          <router-link to="/">Home</router-link>
+        </div>
+        <div 
           v-if="userInfo" 
-          class="absolute right-5"
-          @click="logout"
+          class="flex flex-col justify-start items-end absolute right-5"
+          @mouseenter="mypageHover=true"
+          @mouseleave="mypageHover=false"
         >
-          Logout
-          <!-- <router-link to="/mypage">Logout</router-link> -->
-        </button>
-        <div v-else class="absolute right-5">
+          <button>
+            <router-link to="/mypage">My page</router-link>
+          </button>
+          <button 
+            v-show="mypageHover"
+            @click="logout"
+          >
+            Logout
+            <!-- <router-link to="/mypage">Logout</router-link> -->
+          </button>
+        </div>
+        <div v-else class="absolute right-5 hoverClass">
           <router-link to="/login">Login</router-link>
         </div>
         <!-- <button class="absolute left-5" @click="navigate('Contact')">Contact</button> -->
@@ -29,7 +40,7 @@
         <!-- :mobile="mobile" -->
     </div>
     <div v-if="userInfo" class="relative w-full bg-white">
-      <div class="absolute right-5 text-xl">
+      <div class="absolute left-5 text-xl">
         Welcome! {{userInfo.nickname}}
       </div>
     </div> 
@@ -57,6 +68,11 @@ export default {
       this.$router.go(0);
     }
   },
+  data() {
+    return {
+      mypageHover: false,
+    }
+  },
   mounted() {
     // console.log("memo")
   }
@@ -65,6 +81,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hoverClass:hover {
+  color: lightgreen;
+}
 button {
   border: none;
   outline: none;

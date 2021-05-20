@@ -21,17 +21,32 @@
       </div>
       <div
         v-if="!initial"
-        class="absolute bg-blue-300 w-5 h-5 rounded-lg flex justify-center items-center"
-        style="right:95%;"
-        :style="{
-          'top':`${postitH * 1/7}rem`,
-          'text-decoration': completed ? 'line-through' : 'none'
-        }"
-        @click="postToList"
+        class="absolute w-full"
       >
-        <!-- :class="{'lineThrough': completed}" -->
-        {{keyIdx}}
+        <div
+          class="absolute bg-blue-300 w-5 h-5 rounded-lg flex justify-center items-center"
+          style="right:95%;"
+          :style="{
+            'top':`${postitH * 1/7}rem`,
+            'text-decoration': completed ? 'line-through' : 'none'
+          }"
+          @click="postToList"
+        >
+          <!-- :class="{'lineThrough': completed}" -->
+          {{keyIdx}}
+        </div>
+        <div
+          class="absolute bg-yellow-300 w-5 h-5 "
+          style="left:95%; border-radius: 50%"
+          :style="{
+            'top':`${postitH * 2/7}rem`,
+          }"
+          @click="emitDelete(keyIdx)"
+        >
+         -
+        </div>
       </div>
+      
       
       <div
         v-if="initial" 
@@ -52,6 +67,7 @@
             class="w-full h-full text-2xl wheel overflowClass pt-1"
             style="background:transparent;white-space:nowrap;vertical-align:center"
             v-model="newMemo"
+            :disabled="disabled"
             :placeholder="body"
             :spellcheck="false"
             type="text"
@@ -118,10 +134,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    inputActive: {
-      type: Boolean,
-      default: false,
-    },
+    // inputActive: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     keyIdx: {
       type: Number,
       default: -1,
@@ -148,18 +164,22 @@ export default {
     }
   },
   watch: {
-    newMemo(newVal) {
-      console.log(newVal.length);
+    newMemo() {
+      // console.log(newVal.length);
       if(this.textConfirmed === true) this.$emit('textchanged');
     }
   },
   methods: {
     limitLines() {
     },
+    emitDelete(keyIdx) {
+      this.$emit('delete', keyIdx);
+    },
     postToList() {
       if(!this.initial || (!this.newMemo || this.newMemo === '')) return;
       // console.log('clicked');
       this.$refs.postIt.classList.add('moveToLeft');
+      this.disabled = true;
     },
     togglePostIt() {
       console.log('toggle '+this.keyIdx)
@@ -184,6 +204,7 @@ export default {
       })
     } else {
       this.$refs.postIt.addEventListener('transitionend', () => {
+        this.disabled = false;
         this.$refs.postIt.classList.remove('postIt');
         this.$refs.postIt.classList.remove('moveToLeft');
         console.log(this.newMemo);
@@ -220,6 +241,7 @@ export default {
   data() {
     return {
       newMemo: '',
+      disabled: false,
     }
   }
 }

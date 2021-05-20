@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import ContainerMain from '../components/ContainerMain.vue'
 import Memo from '../components/Memo.vue'
 import TodoList from '../components/TodoList.vue'
+import MyPage from '../components/MyPage.vue'
 import Register from '../components/Register.vue'
 import Contact from '../components/Contact.vue'
 import Login from '../components/Login.vue'
@@ -31,6 +32,11 @@ const routes = [
         name: 'Contact',
         path: 'contact',
         component: Contact
+      },
+      {
+        name: 'MyPage',
+        path: 'mypage',
+        component: MyPage
       },
       {
         name: 'Login',

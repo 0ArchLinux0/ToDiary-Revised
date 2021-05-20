@@ -2,14 +2,15 @@
   <div class="flex flex-col justify-start items-center w-full h-full pt-10">
     <div 
       id="title" 
-      class="flex justify-center items-center text-4xl bg-blue-200"
-      style="margin-bottom: 17vh"
+      class="flex justify-center items-center text-4xl"
+      style="margin-bottom: 25vh"
     >
+    <!-- bg-blue-300 px-2 -->
       Register
     </div>
-
+<!-- border-2 border-black -->
     <div
-      class="relative w-full border-2 border-black flex flex-col justify-start items-center"
+      class="relative w-full flex flex-col text-xl justify-start items-center"
       style="height:200px"
     >
       <!-- <transition appear name="fade">
@@ -55,14 +56,15 @@
           </div>
           <!-- class="absolute bg-white" -->
         </div>
-        <div 
+        <button 
           v-else-if="mode==='login'"
+          class="bg-blue-200 rounded-lg px-2"
           @click="googleLoginRequest" 
           key="login"
         > 
           Sign up with google 
           <!-- class="absolute buttonbox bg-blue-300 px-2 rounded-lg text-2xl" -->
-        </div>
+        </button>
       </transition>
         <div 
           style="color: red;"
@@ -115,7 +117,7 @@ export default {
     },
     check() {
       const nickname = this.$refs.postit.newMemo;
-      AccountService.exists({ nickname })
+      AccountService.getInfo({ nickname })
       .then(({ data }) => { 
         console.log(data)
         if(data==1) {
@@ -175,12 +177,18 @@ export default {
             // Wrong password or not registered email
             // this.$route.push({name: 'Home'});
             //TODO: handle error case when account type is different
-          } else  this.loginAttemptErrMsg = 'error'
+          } else {
+            this.processRegisteration = false;
+            this.error = false;
+          }
         })
-        .catch((e) => {
-          console.log(e);
-          this.error = true;
-          this.email = undefined;
+        .catch(() => {
+          // console.log(e);
+          // if(e == 'closed') {
+          //   // this.error
+          // }
+          this.error = false;
+          this.processRegisteration = false;
         })
       // this.processRegisteration = true;
     },
@@ -251,5 +259,9 @@ th,td {
 .slide-fade-leave-to {
   transform: translateX(50px);
   opacity: 0;
+}
+*:focus {
+  outline: none;
+  border: none;
 }
 </style>

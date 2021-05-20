@@ -15,6 +15,7 @@
         </div>
         <input 
           type="checkbox"
+          :checked="isPublic"
           id="toggle-slider"
         />
         <label for="toggle-slider"/>
@@ -49,7 +50,7 @@
         ---------Have to do---------
         <div
           v-for="todo of haveTodos"
-          :key="`haveTodo-${todo.idx}`"
+          :key="`${keyPrefix[todo.idx]}-haveTodo-${todo.idx}`"
           class="relative w-full"
         >
         <!-- bg-red-300 -->
@@ -58,6 +59,7 @@
             :keyIdx="todo.idx"
             :completed="false"
             @added="added"
+            @delete="deleteTodo"
             @toggletodo="toggletodo"
           />
         </div>
@@ -70,7 +72,7 @@
         ---------Completed!---------
         <div
           v-for="todo of completedTodos"
-          :key="`complete-${todo.idx}`"
+          :key="`${keyPrefix}-complete-${todo.idx}`"
           class="relative w-full"
         >
           <PostIt
@@ -78,6 +80,7 @@
             :keyIdx="todo.idx"
             :completed="true"
             @added="added"
+            @delete="deleteTodo"
             @toggletodo="toggletodo"
           />
         </div>
@@ -88,7 +91,9 @@
 </template>
 <script>
 import PostIt from '../components/PostIt.vue'
-// import AccountService from "@/services/AccountService.js"
+// import ContentService from "@/services/ContentService.js"
+import AccountService from "@/services/AccountService.js"
+// import md5 from "crypto-js/md5";
 // import Vue from "vue";
 export default {
   name: 'TodoList',
@@ -99,6 +104,11 @@ export default {
     msg: String
   },
   computed: {
+    todoListDateInfo() {
+      const date = new Date();
+      const temp = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
+      return temp.toISOString().split('T')[0];
+    },
     progress() {
       if(!this.todos.length) return `0/0 (0%)` 
       const completedItems = this.todos.reduce((acc, item) => {
@@ -126,12 +136,58 @@ export default {
         })
       }
       return completedTodos;
+    },
+    userInfo() {
+      return this.$store.getters["AccountModule/userInfo"]
     }
   },
   methods: {
     save() {
-      // console.log(this.todos)
-      // AccountService.saveTodoList()
+      // if(!this.todos || !this.todos.length) return;
+      // ContentService.postContent({
+      //   dbname: 'content',
+      //   collection: "postit",
+      //   toWrite: {
+      //     _id: md5(
+      //       this.userInfo.oid + 
+      //       "-" + 
+      //       (new Date().getDate() - this.initialDate.getDate()
+      //     )).toString(),
+      //     todos:this.todos,
+      //     isPublic: this.isPublic,
+      //     viewer: this.viewer,
+      //     savedDate: new Date(),
+      //     owner: this.userInfo.oid,
+      //   }
+      // })
+      const toWrite = {};
+      toWrite[
+        `todolist.${this.todoListDateInfo}`
+      ] = {
+        todos:this.todos,
+        isPublic: this.isPublic,
+        viewer: this.viewer,
+        owner: this.userInfo.oid,
+      }
+      AccountService.setAccountData({
+        oid: this.userInfo.oid,
+        toWrite: toWrite,
+      })
+    },
+    deleteTodo(keyIdx) {
+      // console.log(keyIdx);
+      // console.log(this.todos[keyIdx]);
+      // console.log(JSON.stringify(this.todos));
+      // console.log(JSON.stringify(this.todos.slice(0,keyIdx)))
+      // console.log(JSON.stringify(this.todos.slice(keyIdx+1)))
+      this.todos = [...this.todos.slice(0, keyIdx), ...this.todos.slice(keyIdx+1)];
+      // console.log(JSON.stringify(this.todos));
+      console.log(this.haveTodos);
+      console.log(this.completedTodos);
+      for(let i=keyIdx; i<this.todos.length; i++ ) {
+        this.keyPrefix[i]=this.keyPrefix[i]^1;
+      }
+      // this.todos.splice(keyIdx,1);
     },
     addToList(todo) {
       console.log(todo);
@@ -149,13 +205,30 @@ export default {
     }
   },
   mounted() {
-
+    // console.log(this.$route.query);
+    const todolistDate = this.$route.query.date ? this.$route.query.date : this.todoListDateInfo;
+    console.log(this.todoListDateInfo)
+    console.log(todolistDate)
+    if(this.userInfo)
+      AccountService.getInfo(this.userInfo.oid, [`todolist.${todolistDate}`])
+        .then(({ data }) => {
+          console.log(data);
+          console.log(todolistDate)
+          if(Object.keys(data.todolist).length) {
+            this.todos = data.todolist[todolistDate].todos
+            this.keyPrefix = Array(Object.keys(data.todolist).length).fill(0);
+          }
+        });
   },
   data() {
     return {
       newMemo: "add todo!",
       todos: [],
       inputActive: true,
+      isPublic: false,
+      viewer: [],
+      keyPrefix: [],
+      // todoListDateInfo: undefined,
     }
   }
 }
@@ -220,5 +293,8 @@ label:after {
 }
 .right {
   transform: skewY(45deg)  translateY(0.35rem);
+}
+*:focus {
+  outline: none;
 }
 </style>

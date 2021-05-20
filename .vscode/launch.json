@@ -16,11 +16,20 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "dbmanger",
+      "name": "dbmanager",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}\\src\\server\\dbmanager.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "contentserver",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}\\src\\server\\contentserver.js"
     }
   ]
 }

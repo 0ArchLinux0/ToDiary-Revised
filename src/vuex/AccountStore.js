@@ -4,6 +4,7 @@ const AccountModule = {
   namespaced: true,
   state: {
     userInfo: undefined,
+    userOid: undefined,
     currentPlayingContentIndex: 0,
   },
   mutations: {
@@ -24,6 +25,7 @@ const AccountModule = {
       console.log('called');
       console.log(userInfo);
       commit("UPDATE_USERINFO", userInfo);
+      // commit("UPDATE_USEROID", userInfo.oid);
     },
     clearUserInfo({ commit }) {
       commit("UPDATE_USERINFO", undefined);
