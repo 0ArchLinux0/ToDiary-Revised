@@ -6,8 +6,8 @@ const axios = require('axios');
 const loginTokenValidation = require('./loginTokenValidation');
 const https = require("https");
 
-// const dbManagerUrl = "http://localhost:1111";
-const dbManagerUrl = "http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1111";
+const dbManagerUrl = "http://localhost:1111";
+// const dbManagerUrl = "http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1111";
 const port = "2083"
 
 const app = express();
@@ -17,6 +17,12 @@ app.use(cors());
 // const localApp = express();
 // localApp.use(express.json({ limit: "50mb" }));
 // localApp.use(cors());
+
+app.get("/test", ((req, res, next) => {
+  console.log("test http connection");
+  console.log(req.query.fuck);
+  res.send("response");
+}));
 
 app.post('/login', (req, res) => {
   const data = req.body;
