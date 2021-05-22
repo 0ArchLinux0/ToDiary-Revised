@@ -4,6 +4,7 @@ const AccountModule = {
   namespaced: true,
   state: {
     userInfo: undefined,
+    // oid, nickname, email
     userOid: undefined,
     currentPlayingContentIndex: 0,
   },

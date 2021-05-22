@@ -28,7 +28,7 @@ export default {
     });
   },
   getInfo(userOid, toGrab) {
-    console.log(userOid);
+    // console.log(userOid);
     return apiClient.get(`${baseURL}/accountdata`, {
       params: {
         userOid,
@@ -36,8 +36,14 @@ export default {
       },
     });
   },
+  exists(filter) {
+    return apiClient.get(`${baseURL}/exists`, { params: filter });
+  },
   postContent(contentInfo) {
     return apiClient.post(`${baseURL}/content`, contentInfo);
+  },
+  register(data) {
+    return apiClient.post(`${baseURL}/register`,data);
   },
   setAccountData(data) {
     return apiClient.post(`${baseURL}/accountdata`, data);

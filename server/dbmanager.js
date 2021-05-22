@@ -35,9 +35,9 @@ app.post("/writeone",((req, res, next) => {
 		.collection(collection)
 		.insertOne({...toWrite})
 		.then((result) => {
-			console.log('inserted oid: ' + result.insertedId);
+			// console.log('inserted oid: ' + result.insertedId);
 			res.send(result.insertedId);
-			console.log("successfully inserted account info into database")
+			// console.log("successfully inserted account info into database")
 		})
 		.catch(err => res.sendStatus(404));
 }));
@@ -56,11 +56,17 @@ app.get("/readone",((req, res, next) => {
       toGrab[`${item}`] = 1;
     }
   }
-	console.log(filter);
-	console.log(toGrab);
+	// console.log(filter);
+	// console.log(toGrab);
 	db[dbname].collection(collection).findOne(filter, {projection: toGrab})
-	.then(result => res.send(result))
-	.catch(err => res.sendStatus(409))
+	.then(result => {
+		// console.log(result) 
+		if(result) res.send(result)
+		else res.sendStatus(404);
+	})
+	.catch(err => {
+		// console.log(err);
+		res.sendStatus(409)})
 	// , (err, accountData) => {
 	// db[dbname].collection(collection)
 	// .findOne(filter, { todolist: { $eleMatch: data.toGrab[0] }, (err, accountData) => {
@@ -83,19 +89,19 @@ app.post("/updateone",((req, res, next) => {
 	const dbname = data.dbname;
 	const collection = data.collection;
 	const toSet = data.toSet;
-	console.log(typeof data.filter);
-	console.log(data.filter);
+	// console.log(typeof data.filter);
+	// console.log(data.filter);
 	// const filter = JSON.parse(data.filter);
 	const filter = data.filter;
 	if(filter._id) filter._id = ObjectId(filter._id); 
-	console.log(filter);
+	// console.log(filter);
 	db[dbname].collection(collection)
 	.updateOne(filter, { $set: toSet })
 	.then((result) => {
 		res.sendStatus(200);
 	})
 	.catch((err) => {
-		console.log(err)
+		// console.log(err)
 		res.sendStatus(404)
 	});
 }));

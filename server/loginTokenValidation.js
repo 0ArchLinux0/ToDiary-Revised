@@ -18,7 +18,7 @@ function verifyToken(token, accountType) {
         if(!result.data.error && result.status == 200) {
           const accountQuery = await getAccountWithEmail(result.data.email);
           // console.log(accountQuery)
-          if(!accountQuery || accountQuery.status !== 200) reject('!registered');
+          if(!accountQuery || accountQuery.status == 404) reject('!registered');
           else resolve(accountQuery.data);
         }
         else reject();

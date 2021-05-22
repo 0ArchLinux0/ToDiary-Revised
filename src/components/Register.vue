@@ -117,7 +117,7 @@ export default {
     },
     check() {
       const nickname = this.$refs.postit.newMemo;
-      AccountService.getInfo({ nickname })
+      AccountService.exists({ nickname })
       .then(({ data }) => { 
         console.log(data)
         if(data==1) {
@@ -138,17 +138,18 @@ export default {
     },
     submit() {
       const nickname = this.$refs.postit.newMemo;
-      AccountService.setAccountData(
+      AccountService.register(
         { 
           nickname: nickname,
           email: this.email,
           accountType: 'google',
         })
-        .then(() => {
+        .then(({ oid }) => {
           this.$router.push({ name:'Home', params: { pushedAfter: 'registered' } }) 
           this.$store.dispatch("AccountModule/updateUserInfo",  {
             email: this.email,
             nickname,
+            oid,
           });
         })
         .catch(() => {

@@ -67,11 +67,39 @@ app.post('/accountdata', (req, res) => {
       })
       .then(response => res.sendStatus(200))
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         res.sendStatus(404)
       })
   // })
 })
+
+app.post('/register', (req, res) => {
+  const data = req.body;
+  dbManager
+  .post('writeone', data)
+  .then(({ data }) => {
+    res.send(data);
+  })
+  .catch((err) => {
+    console.log(err)
+    res.sendStatus(404)
+  });
+})
+
+// app.post('/accountdata', (req, res) => {
+  //   const data = req.body;
+  //   dbManager
+  //     .post('updatone', { 
+  //       dbname: 'userdata',
+  //       collection: 'accounts',
+  //       filter: { _id: data.oid },
+  //       toSet: data.toSet,
+  //     }) 
+  //     .then((response) => {
+  //       res.send(response);
+  //     })
+  //     .catch((err) => res.sendStatus(404));
+  // })
 
 app.post('/content', (req, res) => {
   const data = req.body;
@@ -88,21 +116,6 @@ app.post('/content', (req, res) => {
     });
 })
 
-app.post('/accountdata', (req, res) => {
-  const data = req.body;
-  dbManager
-    .post('updatone', { 
-      dbname: 'userdata',
-      collection: 'accounts',
-      filter: { _id: data.oid },
-      toSet: data.toSet,
-    }) 
-    .then((response) => {
-      res.send(response);
-    })
-    .catch((err) => res.sendStatus(404));
-})
-
 app.get('/accountdata', (req, res) => {
   const data = req.query;
   dbManager
@@ -116,6 +129,27 @@ app.get('/accountdata', (req, res) => {
     }).then(({ data }) => res.send(data))
     .catch((err) => {console.log(err); res.sendStatus(404)});
 })
+
+app.get('/exists', (req, res) => {
+  const filter = req.query;
+  // const filter = JSON.stringify(req.query);
+  dbManager
+  .get('/readone', {
+    params: {
+      dbname: 'userdata',
+      collection: 'accounts',
+      filter: filter,
+    },
+  }).then(({ data }) => res.send('1'))
+  .catch((err) => {
+    console.log(err); 
+    if(err.response.status == 404) res.send('0')
+    else {
+      res.sendStatus(401)
+    }
+  });
+})
+
 
 let server;
 try {
