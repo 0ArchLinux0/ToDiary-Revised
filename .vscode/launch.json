@@ -11,7 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\server\\accountserver.js"
+      "program": "${workspaceFolder}\\server\\accountserver.js"
     },
     {
       "type": "node",
@@ -20,7 +20,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\server\\dbmanager.js"
+      "program": "${workspaceFolder}\\server\\dbmanager.js"
     },
     {
       "type": "node",
@@ -29,7 +29,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\src\\server\\contentserver.js"
+      "program": "${workspaceFolder}\\server\\contentserver.js"
     }
   ]
 }

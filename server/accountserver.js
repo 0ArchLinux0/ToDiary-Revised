@@ -1,7 +1,10 @@
 const cors = require("cors");
 const express = require("express");
+const fs = require("fs");
+const path = require("path");
 const axios = require('axios');
 const loginTokenValidation = require('./loginTokenValidation');
+const https = require("https");
 
 // const dbManagerUrl = "http://localhost:1111";
 const dbManagerUrl = "http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1111";
@@ -108,8 +111,21 @@ app.get('/accountdata', (req, res) => {
     .catch((err) => {console.log(err); res.sendStatus(404)});
 })
 
+let server;
+try {
+  options = {
+    cert: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-cert.pem")),
+    key: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-private.key")),
+  };
+  server = https.createServer(options, app);
+} catch(e) {
+  console.log("contentserver - development mode");
+  console.log(e);
+  server = app;
+}
 
-app.listen(port, "0.0.0.0", () => {
+
+server.listen(port, "0.0.0.0", () => {
   dbManager = axios.create({
     withCredentials: false,
     baseURL: dbManagerUrl,

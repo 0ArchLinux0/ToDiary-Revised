@@ -9,14 +9,14 @@
       "request": "launch",
       "name": "accountserver",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\src\\server\\accountserver.js"
+      "program": "${workspaceFolder\\server\\accountserver.js"
     },
     {
       "type": "node",
       "request": "launch",
       "name": "dbmanager",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\src\\server\\dbmanger.js"
+      "program": "${workspaceFolder\\server\\dbmanger.js"
     }
   ]
 }
