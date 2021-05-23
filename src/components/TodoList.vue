@@ -220,13 +220,17 @@ export default {
         todo: todo,
         completed: false,
       })
+      this.keyPrefix.push(0);
       // this.inputActive = false;
     },
     // added() {
       // this.inputActive = true;
     // },
     toggletodo(idx) {
+      console.log(idx);
+      console.log(JSON.stringify(this.todos));
       this.todos[idx]["completed"] = !this.todos[idx].completed;
+      this.keyPrefix[idx]=this.keyPrefix[idx]^1;
     }
   },
   mounted() {

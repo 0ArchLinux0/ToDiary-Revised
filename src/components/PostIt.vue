@@ -41,7 +41,7 @@
           :style="{
             'top':`${postitH * 2/7}rem`,
           }"
-          @click="emitDelete(keyIdx)"
+          @click.stop="emitDelete(keyIdx)"
         >
          -
         </div>
@@ -223,6 +223,7 @@ export default {
       this.disabled = true;
     },
     togglePostIt() {
+      console.log('toggle')
       if(this.keyIdx == -1) return;
       // console.log('toggle '+this.keyIdx)
       this.$emit('toggletodo', this.keyIdx)
