@@ -15,6 +15,7 @@
         }"
         :style="{'text-decoration': completed ? 'line-through' : 'none'}"
         style="white-space:nowrap;"
+        @touchstart.prevent.self="togglePostIt"
         @click="togglePostIt"
       >
         <span>{{newMemo}}</span>
@@ -91,7 +92,7 @@
             :spellcheck="false"
             type="text"
             rows=2
-            maxlength="62"
+            :maxlength="maxInput"
           />
         </div>
         <div
@@ -107,7 +108,7 @@
           style="left:91.6666%;"
         />
         <div
-
+          v-if="!preventDefalut"
           class="absolute bg-red-300 w-5 h-5 "
           style="left:95%; border-radius: 50%"
           :style="{
@@ -127,7 +128,7 @@
       style="right:8.333%"
       :style="{'color': textAreaFull ? 'red' : 'black'}"
     >
-       ({{ length }}/110)
+       ({{ length }}/{{ maxInput }})
      </div>
     </div>
 </template>
@@ -155,6 +156,10 @@ export default {
     preventDefalut: {
       type: Boolean,
       default: false,
+    },
+    maxInput: {
+      type: Number,
+      default: 62,
     },
     buttonName: {
       type: String,
@@ -212,13 +217,14 @@ export default {
       this.$emit('delete', keyIdx);
     },
     postToList() {
-      if(!this.initial || (!this.newMemo || this.newMemo === '')) return;
+      console.log('called');
+      if(!this.initial || (!this.newMemo || this.newMemo === '') ) return;
       // console.log('clicked');
       this.$refs.postIt.classList.add('moveToLeft');
       this.disabled = true;
     },
     togglePostIt() {
-      console.log('toggle '+this.keyIdx)
+      // console.log('toggle '+this.keyIdx)
       this.$emit('toggletodo', this.keyIdx)
     },
     submit() {
@@ -252,7 +258,7 @@ export default {
         // console.log("!!!!!!!!")
         // console.log(this.$refs.postIt.classList)
       })
-      // this.$refs.postIt.classList.add('postIt');
+      this.$refs.postIt.classList.add('postIt');
       // this.$refs.postIt.classList.add('priorityMoveToLeft');
     }
     this.$refs.postIt.addEventListener('wheel', event => {

@@ -74,9 +74,10 @@ export default {
         .then(({ data }) => {
           if(!data || !data.todolist) return;
           const keys = Object.keys(data.todolist)
-          if(keys.length) 
-            for(const date of keys)
-              this.todos.push(date);
+          const len = keys.length;
+          if(len) 
+            for(let i = 0; i  < len; i++)
+              this.todos[i] = keys[len-1-i];
         });
   },
   data() {
