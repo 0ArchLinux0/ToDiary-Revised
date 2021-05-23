@@ -2,7 +2,9 @@
   <div 
     class="relative w-full flex justify-center"
     :style="{'height': `${postitH}rem`}"
+    @click="togglePostIt"
   >
+    <!-- @touchstart.prevent.self="togglePostIt" -->
       <!-- background:linear-gradient(to right, #BFDBFE, #b1d4ff); -->
       <div
         v-if="!initial"
@@ -15,8 +17,6 @@
         }"
         :style="{'text-decoration': completed ? 'line-through' : 'none'}"
         style="white-space:nowrap;"
-        @touchstart.prevent.self="togglePostIt"
-        @click="togglePostIt"
       >
         <span>{{newMemo}}</span>
       </div>
@@ -31,7 +31,6 @@
             'top':`${postitH * 1/7}rem`,
             'text-decoration': completed ? 'line-through' : 'none'
           }"
-          @click="postToList"
         >
           <!-- :class="{'lineThrough': completed}" -->
           {{keyIdx}}
@@ -217,13 +216,14 @@ export default {
       this.$emit('delete', keyIdx);
     },
     postToList() {
-      console.log('called');
+      // console.log('called');
       if(!this.initial || (!this.newMemo || this.newMemo === '') ) return;
       // console.log('clicked');
       this.$refs.postIt.classList.add('moveToLeft');
       this.disabled = true;
     },
     togglePostIt() {
+      if(this.keyIdx == -1) return;
       // console.log('toggle '+this.keyIdx)
       this.$emit('toggletodo', this.keyIdx)
     },
@@ -250,12 +250,11 @@ export default {
         this.disabled = false;
         this.$refs.postIt.classList.remove('postIt');
         this.$refs.postIt.classList.remove('moveToLeft');
-        console.log(this.newMemo);
-        this.$emit('addToList',this.newMemo);
+        // console.log(this.newMemo);
+        this.$emit('addToList', this.newMemo);
         this.newMemo = '';
         setTimeout(() => this.$refs.postIt.classList.add('postIt'));
 
-        // console.log("!!!!!!!!")
         // console.log(this.$refs.postIt.classList)
       })
       this.$refs.postIt.classList.add('postIt');

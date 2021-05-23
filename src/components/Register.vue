@@ -35,6 +35,7 @@
             :initial="true"
             body="Your Nickname"
             :preventDefalut="true"
+            :maxInput="13"
             buttonName="submit"
             :textConfirmed="textConfirmed"
             @textchanged="textConfirmed=false;canUseNickname=false;nicknameCheckResult=''"
