@@ -9,7 +9,6 @@ const AccountModule = {
     //   nickname: 'Admin',
     //   oid: '60a4c9f8708c73536cb73f49',
     // },
-    userInfo: undefined,
     mobile: false,
     // oid, nickname, email
     userOid: undefined,
