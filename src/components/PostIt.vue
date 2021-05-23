@@ -47,7 +47,6 @@
         </div>
       </div>
       
-      
       <div
         v-if="initial" 
         class="relative w-full h-full flex justify-center"
@@ -239,15 +238,16 @@ export default {
     // this.isMobile =this.$store.getters["AccountModule/mobile"]
     if(!this.initial) {
       this.newMemo = this.body;
-      this.newMemo = 'mounted'
-      this.$refs.postIt.classList.add('priorityMoveToLeft');
+      this.newMemo = 'mounted';
+      // this.$refs.postIt.classList.add('priorityMoveToLeft');
+      this.$refs.postIt.classList.add('fromLeftToRight');
       // this.$refs.postIt.addEventListener('transitionend', () => {
       //   this.$emit('added');
       // })
-      setTimeout(() => {
-        this.newMemo = 'set timeout'
-        this.$refs.postIt.classList.add('postIt');
-      },5)
+      // setTimeout(() => {
+      //   // this.newMemo = 'set timeout'
+      //   this.$refs.postIt.classList.add('postIt');
+      // },5)
     } else {
       this.$refs.postIt.addEventListener('transitionend', () => {
         this.disabled = false;
@@ -303,6 +303,11 @@ input {
 input:focus {
   line-height: 0px;
   color: grey;
+}
+.fromLeftToRight {
+  animation: leftToRight 0.5s ease-out 1;
+  transition: ease-out 0.5s;
+  /* transform: translateX(-100%); */
 }
 .priorityMoveToLeft {
   right: 100vw;
@@ -375,5 +380,13 @@ textarea {
   transform: skewY(45deg)  translateY(0.35rem);
   background-color: #7ab6ff;
   background-color: #a0cbff;
+}
+@keyframes leftToRight {
+  from { right: 100vw; }
+  to { right: 0; }
+}
+@keyframes rightToLeft {
+  from { right: 0; }
+  to { right: 100vw; }
 }
 </style>
