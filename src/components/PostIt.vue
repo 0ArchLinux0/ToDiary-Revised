@@ -233,9 +233,9 @@ export default {
     if(!this.initial) {
       this.newMemo = this.body;
       this.$refs.postIt.classList.add('priorityMoveToLeft');
-      this.$refs.postIt.addEventListener('transitionend', () => {
-        this.$emit('added');
-      })
+      // this.$refs.postIt.addEventListener('transitionend', () => {
+      //   this.$emit('added');
+      // })
       setTimeout(() => {
         this.$refs.postIt.classList.add('postIt');
       })
@@ -252,7 +252,7 @@ export default {
         // console.log("!!!!!!!!")
         // console.log(this.$refs.postIt.classList)
       })
-      this.$refs.postIt.classList.add('postIt');
+      // this.$refs.postIt.classList.add('postIt');
       // this.$refs.postIt.classList.add('priorityMoveToLeft');
     }
     this.$refs.postIt.addEventListener('wheel', event => {
