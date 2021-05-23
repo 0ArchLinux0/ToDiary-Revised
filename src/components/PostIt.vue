@@ -238,7 +238,7 @@ export default {
     // this.isMobile =this.$store.getters["AccountModule/mobile"]
     if(!this.initial) {
       this.newMemo = this.body;
-      this.newMemo = 'mounted';
+      // this.newMemo = 'mounted';
       // this.$refs.postIt.classList.add('priorityMoveToLeft');
       this.$refs.postIt.classList.add('fromLeftToRight');
       // this.$refs.postIt.addEventListener('transitionend', () => {
