@@ -144,12 +144,13 @@ export default {
           email: this.email,
           accountType: 'google',
         })
-        .then(({ oid }) => {
+        .then(({ data }) => {
+          // console.log(data);
           this.$router.push({ name:'Home', params: { pushedAfter: 'registered' } }) 
           this.$store.dispatch("AccountModule/updateUserInfo",  {
             email: this.email,
             nickname,
-            oid,
+            oid: data,
           });
         })
         .catch(() => {

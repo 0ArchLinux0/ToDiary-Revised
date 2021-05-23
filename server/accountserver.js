@@ -76,7 +76,11 @@ app.post('/accountdata', (req, res) => {
 app.post('/register', (req, res) => {
   const data = req.body;
   dbManager
-  .post('writeone', data)
+  .post('writeone', {
+    dbname: 'userdata',
+    collection: 'accounts',
+    toWrite: data,
+  })
   .then(({ data }) => {
     res.send(data);
   })
