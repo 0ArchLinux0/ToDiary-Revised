@@ -17,7 +17,7 @@ app.use(cors());
 
 app.post('/content', (req, res) => {
   const data = req.body;
-  console.log(data);
+  // console.log(data);
   const { collection, contentInfo } = data;
   // if(data.requestorOid == data.userOid) {
     // 
@@ -42,7 +42,7 @@ app.post('/content', (req, res) => {
 
 app.get('/postIt', (req, res) => {
   const _id = req.query._id;
-  console.log(_id);
+  // console.log(_id);
   dbManager
     .get('readone', { params: { 
       filter: { _id },

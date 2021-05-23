@@ -46,8 +46,8 @@ export default {
       // console.log("pushed from register page");
       this.congratulate = true;
     }
-    console.log('store');
-    console.log(this.$store.getters["AccountModule/userInfo"])
+    // console.log('store');
+    // console.log(this.$store.getters["AccountModule/userInfo"])
     // console.log();
   },
   data() {

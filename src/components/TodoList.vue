@@ -182,15 +182,15 @@ export default {
       // console.log(JSON.stringify(this.todos.slice(keyIdx+1)))
       this.todos = [...this.todos.slice(0, keyIdx), ...this.todos.slice(keyIdx+1)];
       // console.log(JSON.stringify(this.todos));
-      console.log(this.haveTodos);
-      console.log(this.completedTodos);
+      // console.log(this.haveTodos);
+      // console.log(this.completedTodos);
       for(let i=keyIdx; i<this.todos.length; i++ ) {
         this.keyPrefix[i]=this.keyPrefix[i]^1;
       }
       // this.todos.splice(keyIdx,1);
     },
     addToList(todo) {
-      console.log(todo);
+      // console.log(todo);
       this.todos.push({
         todo: todo,
         completed: false,
@@ -207,14 +207,14 @@ export default {
   mounted() {
     // console.log(this.$route.query);
     const todolistDate = this.$route.query.date ? this.$route.query.date : this.todoListDateInfo;
-    console.log(this.todoListDateInfo)
-    console.log(todolistDate)
+    // console.log(this.todoListDateInfo)
+    // console.log(todolistDate)
     if(this.userInfo)
       AccountService.getInfo(this.userInfo.oid, [`todolist.${todolistDate}`])
         .then(({ data }) => {
-          console.log(data);
-          console.log(todolistDate)
-          if(Object.keys(data.todolist).length) {
+          // console.log(data);
+          // console.log(todolistDate)
+          if(data && data.todolist && Object.keys(data.todolist).length) {
             this.todos = data.todolist[todolistDate].todos
             this.keyPrefix = Array(Object.keys(data.todolist).length).fill(0);
           }

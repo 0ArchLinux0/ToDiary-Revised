@@ -100,7 +100,7 @@ export default {
     mode() {
       if(this.currentUser) return 'loggedin';
       else if(this.processRegisteration) {
-        console.log('mode is register!!!!!!!!')
+        // console.log('mode is register!!!!!!!!')
         return 'register';
       }
       else if(this.error) return 'error'
@@ -113,7 +113,7 @@ export default {
     },
     a() {
       this.processRegisteration =false;
-      console.log('clicked')
+      // console.log('clicked')
     },
     check() {
       const nickname = this.$refs.postit.newMemo;

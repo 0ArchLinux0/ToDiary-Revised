@@ -56,13 +56,13 @@ export default {
     }
   },
   methods: {
-    move(menu) {
-      // if(user)
-      console.log(menu)
-    },
-    formatDate(dateString) {
-      console.log(dateString)
-    },
+    // move(menu) {
+    //   // if(user)
+    //   console.log(menu)
+    // },
+    // formatDate(dateString) {
+    //   console.log(dateString)
+    // },
     seeTodoDetails(date) {
       console.log(date)
       this.$router.push({ name: `TodoList`, query: { date } })
@@ -72,6 +72,7 @@ export default {
    if(this.userInfo)
       AccountService.getInfo(this.userInfo.oid, [`todolist`])//TODO: only get field date in todolist so much waste now
         .then(({ data }) => {
+          if(!data || !data.todolist) return;
           const keys = Object.keys(data.todolist)
           if(keys.length) 
             for(const date of keys)
