@@ -93,7 +93,7 @@
         ---------Completed!---------
         <div
           v-for="todo of completedTodos"
-          :key="`${keyPrefix}-complete-${todo.idx}`"
+          :key="`${keyPrefix[todo.idx]}-complete-${todo.idx}`"
           class="relative w-full"
         >
           <PostIt
