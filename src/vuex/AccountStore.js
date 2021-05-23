@@ -3,12 +3,13 @@
 const AccountModule = {
   namespaced: true,
   state: {
-    // userInfo: undefined,
-    userInfo: {
-      email: 'bluebluerize900@gmail.com',
-      nickname: 'Admin',
-      oid: '60a4c9f8708c73536cb73f49',
-    },
+    userInfo: undefined,
+    // userInfo: {
+    //   email: 'bluebluerize900@gmail.com',
+    //   nickname: 'Admin',
+    //   oid: '60a4c9f8708c73536cb73f49',
+    // },
+    userInfo: undefined,
     mobile: false,
     // oid, nickname, email
     userOid: undefined,

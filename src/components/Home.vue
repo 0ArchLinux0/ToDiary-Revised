@@ -33,11 +33,18 @@ export default {
   props: {
     msg: String
   },
+  computed: {
+    userInfo() {
+      return this.$store.getters["AccountModule/userInfo"]
+    }
+  },
   methods: {
     move(menu) {
       // if(user)
       if(menu.name == 'memo(will be ready soon...)') return;
-      this.$router.push({ path: `/${menu}` })
+      if(this.userInfo)
+        this.$router.push({ path: `/${menu}` })
+      else this.$router.push({ path:`login`})
     }
   },
   mounted() {
