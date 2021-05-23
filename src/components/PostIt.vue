@@ -247,7 +247,7 @@ export default {
       setTimeout(() => {
         this.newMemo = 'set timeout'
         this.$refs.postIt.classList.add('postIt');
-      })
+      },5)
     } else {
       this.$refs.postIt.addEventListener('transitionend', () => {
         this.disabled = false;
