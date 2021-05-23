@@ -227,8 +227,8 @@ export default {
       // this.inputActive = true;
     // },
     toggletodo(idx) {
-      console.log(idx);
-      console.log(JSON.stringify(this.todos));
+      // console.log(idx);
+      // console.log(JSON.stringify(this.todos));
       this.todos[idx]["completed"] = !this.todos[idx].completed;
       this.keyPrefix[idx]=this.keyPrefix[idx]^1;
     }
