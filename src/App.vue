@@ -1,7 +1,6 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <router-view
-    :mobile="mobile"
   />
 </template>
 
@@ -14,6 +13,13 @@ export default {
     // Memo
   },
   mounted() {
+    // console.log('app.vue mounted');
+    const filter = "hp-ux|linux i686|linux armv7l|mac68k|macppc|macintel|sunos|win16|win32|wince";
+    console.log(navigator.platform);
+    let isMobile;
+    if (navigator.platform) isMobile = filter.indexOf(navigator.platform.toLowerCase()) < 0;
+    this.$store.dispatch("AccountModule/updateMobile", isMobile);
+
     const googleLoginApi = document.createElement("script");
     googleLoginApi.setAttribute(
       "src",
@@ -33,7 +39,7 @@ export default {
   },
   data() {
     return {
-      mobile: false,
+      // mobile: false,
     }
   }
 }
@@ -65,6 +71,11 @@ body {
   /* background-size: contain; */
   background-size: 100vw 100vh;
   user-select: none;
+}
+@media screen and (max-width: 400px) {
+  #app {
+    background-repeat: repeat;
+  }
 }
 button:hover {
   color: lightgreen;

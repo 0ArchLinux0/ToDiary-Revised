@@ -7,7 +7,28 @@
     >
       todo checklist
     </div>
-    <div class="relative flex w-10/12 justify-center mb-1 text-xl">
+    <div v-if="isMobile" class="relative flex w-10/12 justify-end mb-1 text-xl">
+      <span class="absolute left-0 text-2xl"> progress: {{progress}} </span>
+      <div class="flex items-center">
+        <div class="mr-2">
+          Public
+        </div>
+        <input 
+          type="checkbox"
+          :checked="isPublic"
+          id="toggle-slider"
+        />
+        <label for="toggle-slider"/>
+        <button
+          class="bg-blue-300 px-4 ml-2"
+          style="border-radius: 3px; rem;"
+          @click="save"
+        >
+          save
+        </button>
+      </div>
+    </div>
+    <div v-else class="relative flex w-10/12 justify-center mb-1 text-xl">
       <span class="absolute left-0 text-2xl"> progress: {{progress}} </span>
       <div class="flex items-center">
         <div class="mr-2">
@@ -20,24 +41,24 @@
         />
         <label for="toggle-slider"/>
       </div>
-      <!-- <div class="absolute w-full flex justify-end items-center"> -->
-        <button
-          class="absolute right-0 bg-blue-300 px-4"
-          style="border-radius: 3px; rem;"
-          @click="save"
-        >
-          save
-        </button>
-      <!-- </div> -->
-    </div>
+       <div class="absolute w-full flex justify-end items-center"> -->
+      <button
+        class="absolute right-0 bg-blue-300 px-4"
+        style="border-radius: 3px; rem;"
+        @click="save"
+      >
+        save
+      </button> 
+      </div>
+    </div> 
     <div
       class="relative w-full"
     >
       <PostIt 
         :initial="true"
-        :inputActive="inputActive"
         @addToList="addToList"
       />
+        <!-- :inputActive="inputActive" -->
     </div>
     <div
       v-if="todos.length"
@@ -58,10 +79,10 @@
             :body="todo.todo"
             :keyIdx="todo.idx"
             :completed="false"
-            @added="added"
             @delete="deleteTodo"
             @toggletodo="toggletodo"
           />
+            <!-- @added="added" -->
         </div>
       </div>
 
@@ -79,10 +100,10 @@
             :body="todo.todo"
             :keyIdx="todo.idx"
             :completed="true"
-            @added="added"
             @delete="deleteTodo"
             @toggletodo="toggletodo"
           />
+            <!-- @added="added" --> 
         </div>
       </div>
     </div>
@@ -114,8 +135,12 @@ export default {
       const completedItems = this.todos.reduce((acc, item) => {
         return acc + (item.completed&1)
       }, 0);
-      return `${completedItems}/${this.todos.length}`
+      if(this.isMobile) return `(${(completedItems/this.todos.length*100).toFixed(1)}%)`
+      else return `${completedItems}/${this.todos.length}`
       + `(${(completedItems/this.todos.length*100).toFixed(1)}%)`
+    },
+    isMobile() {
+      return this.$store.getters["AccountModule/mobile"];
     },
     haveTodos() {
       const haveTodos = [];
@@ -195,11 +220,11 @@ export default {
         todo: todo,
         completed: false,
       })
-      this.inputActive = false;
+      // this.inputActive = false;
     },
-    added() {
-      this.inputActive = true;
-    },
+    // added() {
+      // this.inputActive = true;
+    // },
     toggletodo(idx) {
       this.todos[idx]["completed"] = !this.todos[idx].completed;
     }
@@ -224,7 +249,7 @@ export default {
     return {
       newMemo: "add todo!",
       todos: [],
-      inputActive: true,
+      // inputActive: true,
       isPublic: false,
       viewer: [],
       keyPrefix: [],

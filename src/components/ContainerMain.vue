@@ -40,7 +40,7 @@
       </div>
         <!-- :mobile="mobile" -->
     </div>
-    <div v-if="userInfo" class="relative w-full bg-white">
+    <div v-if="showWelcomeMsg && userInfo" class="relative w-full bg-white">
       <div class="absolute left-5 text-xl">
         Welcome! {{userInfo.nickname}}
       </div>
@@ -58,7 +58,7 @@
 export default {
   name: 'ContainerMain',
   props: {
-    msg: String
+    // msg: String
   },
   computed: {
     userInfo() {
@@ -77,10 +77,12 @@ export default {
   data() {
     return {
       mypageHover: false,
+      showWelcomeMsg: false,
     }
   },
   mounted() {
     // console.log("memo")
+    this.showWelcomeMsg = this.$route.query.welcomeMsg;
   }
 }
 </script>

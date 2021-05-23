@@ -34,6 +34,7 @@
             ref="postit"
             :initial="true"
             body="Your Nickname"
+            :preventDefalut="true"
             buttonName="submit"
             :textConfirmed="textConfirmed"
             @textchanged="textConfirmed=false;canUseNickname=false;nicknameCheckResult=''"
@@ -87,10 +88,10 @@ export default {
     PostIt,
   },
   props: {
-    mobile: {
-      type: Boolean,
-      default: true,
-    }
+    // mobile: {
+    //   type: Boolean,
+    //   default: true,
+    // }
   },
   computed: {
     currentUser() {

@@ -85,10 +85,10 @@ import AccountService from "@/services/AccountService.js"
 export default {
   name: 'Login',
   props: {
-    mobile: {
-      type: Boolean,
-      default: true,
-    }
+    // mobile: {
+    //   type: Boolean,
+    //   default: true,
+    // }
   },
   computed: {
   },
@@ -123,7 +123,7 @@ export default {
               oid: data._id,
             });
             
-            this.$router.push({name: "Home"});
+            this.$router.push({name: "Home", query: { welcomeMsg: true }});
           } 
           else {  //TODO Handle unhandled case
             this.loginerror = true;

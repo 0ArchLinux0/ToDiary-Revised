@@ -173,10 +173,10 @@ This privacy policy page was created at privacypolicytemplate.net and modified/g
 export default {
   name: 'Policy',
   props: {
-    mobile: {
-      type: Boolean,
-      default: true,
-    }
+    // mobile: {
+    //   type: Boolean,
+    //   default: true,
+    // }
   },
   computed: {
   },

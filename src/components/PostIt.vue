@@ -50,7 +50,7 @@
       
       <div
         v-if="initial" 
-        class="absolute w-full h-full flex justify-center"
+        class="relative w-full h-full flex justify-center"
       >
         <div
           ref="postIt"
@@ -72,7 +72,7 @@
             :spellcheck="false"
             type="text"
             rows=2
-            maxlength="62"
+            maxlength="110"
             @keydown.enter.exact.prevent
             @keydown.enter="postToList"
           />
@@ -107,6 +107,7 @@
           style="left:91.6666%;"
         />
         <div
+
           class="absolute bg-red-300 w-5 h-5 "
           style="left:95%; border-radius: 50%"
           :style="{
@@ -119,6 +120,15 @@
           +
         </div>
       </div>
+    </div>
+    <div v-if="initial" class="relative w-full">
+     <div 
+      class="absolute" 
+      style="right:8.333%"
+      :style="{'color': textAreaFull ? 'red' : 'black'}"
+    >
+       ({{ length }}/110)
+     </div>
     </div>
 </template>
 <script>
@@ -142,6 +152,10 @@ export default {
       type: Number,
       default: -1,
     },
+    preventDefalut: {
+      type: Boolean,
+      default: false,
+    },
     buttonName: {
       type: String,
       default: '',
@@ -163,12 +177,34 @@ export default {
       default: false,
     }
   },
+  computed: {
+    textAreaFull() {
+      return this.length == 110;
+    }
+  },
   watch: {
-    newMemo() {
+    newMemo(newVal) {
       // console.log(newVal.length);
+      this.length = newVal.length;
       if(this.textConfirmed === true) this.$emit('textchanged');
     }
   },
+  emits: ['delete', 'toggletodo', 'getBody', 'added', 'addToList'],
+  // emits: {
+  //   // No validation
+  //   click: null,
+    
+
+  //   // Validate submit event
+  //   submit: ({ email, password }) => {
+  //     if (email && password) {
+  //       return true
+  //     } else {
+  //       console.warn('Invalid submit event payload!')
+  //       return false
+  //     }
+  //   }
+  // },
   methods: {
     limitLines() {
     },
@@ -193,6 +229,7 @@ export default {
 
   },
   mounted() {
+    // this.isMobile =this.$store.getters["AccountModule/mobile"]
     if(!this.initial) {
       this.newMemo = this.body;
       this.$refs.postIt.classList.add('priorityMoveToLeft');
@@ -242,6 +279,7 @@ export default {
     return {
       newMemo: '',
       disabled: false,
+      length: 0,
     }
   }
 }
@@ -312,7 +350,7 @@ textarea {
   height: 9px;
   border-radius: 4px;
   cursor: pointer;
-  background-color: none;
+  background-color: rgb(197, 220, 245);
   opacity: 0.1
 }
 ::-webkit-scrollbar-button {
