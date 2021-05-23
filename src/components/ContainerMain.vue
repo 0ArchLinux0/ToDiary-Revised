@@ -16,7 +16,7 @@
         </div>
         <div 
           v-if="userInfo" 
-          class="flex flex-col justify-start items-end absolute right-5"
+          class="flex flex-col justify-start items-end absolute right-5 z-20"
           @mouseenter="mypageHover=true"
           @mouseleave="mypageHover=false"
         >

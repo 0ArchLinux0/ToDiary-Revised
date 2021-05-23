@@ -7,15 +7,15 @@
       v-for="(menu, idx) in menus"
       class="pointer w-1/2"
       :key="`menu-${idx}`"
-      @click="move(menu)"
+      @click="move(menu.path)"
     >
       <div
         class="mb-10"
       >
         <PostIt
-          :body="menu"
+          :body="menu.name"
           :postitH="6"
-          :keyIdx="idx+1"
+          :preventDefault="true"
           :textCenter="true"
           :completed="false"
         />
@@ -36,7 +36,7 @@ export default {
   methods: {
     move(menu) {
       // if(user)
-      if(menu == 'memo(will be ready soon...)') return;
+      if(menu.name == 'memo(will be ready soon...)') return;
       this.$router.push({ path: `/${menu}` })
     }
   },
@@ -53,7 +53,16 @@ export default {
   data() {
     return {
       // menus: ["todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo",]
-      menus: ["todo", "memo(will be ready soon...)"],
+      menus: [
+        { 
+          name:"todo list",
+          path:"todo"
+        }, 
+        {
+          name:"memo(will be ready soon...)",
+          path:""
+        }
+      ],
       congratulate: false,
     }
   }

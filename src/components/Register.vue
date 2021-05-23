@@ -34,7 +34,7 @@
             ref="postit"
             :initial="true"
             body="Your Nickname"
-            :preventDefalut="true"
+            :preventDefault="true"
             :maxInput="13"
             buttonName="submit"
             :textConfirmed="textConfirmed"

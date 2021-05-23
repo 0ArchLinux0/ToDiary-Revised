@@ -33,9 +33,10 @@
           }"
         >
           <!-- :class="{'lineThrough': completed}" -->
-          {{keyIdx}}
+          {{ keyIdx + 1 }}
         </div>
         <div
+          v-if="!preventDefault"
           class="absolute bg-yellow-300 w-5 h-5 "
           style="left:95%; border-radius: 50%"
           :style="{
@@ -106,7 +107,7 @@
           style="left:91.6666%;"
         />
         <div
-          v-if="!preventDefalut"
+          v-if="!preventDefault"
           class="absolute bg-red-300 w-5 h-5 "
           style="left:95%; border-radius: 50%"
           :style="{
@@ -151,7 +152,7 @@ export default {
       type: Number,
       default: -1,
     },
-    preventDefalut: {
+    preventDefault: {
       type: Boolean,
       default: false,
     },
@@ -236,6 +237,7 @@ export default {
   },
   mounted() {
     // this.isMobile =this.$store.getters["AccountModule/mobile"]
+    console.log('moutned idx: ' + this.keyIdx);
     if(!this.initial) {
       this.newMemo = this.body;
       // this.newMemo = 'mounted';

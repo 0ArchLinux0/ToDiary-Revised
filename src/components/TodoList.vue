@@ -2,13 +2,18 @@
   <div class="flex flex-col justify-start items-center w-full">
     <div 
       id="title" 
-      class="flex justify-center bg-red-200 items-center px-3 text-4xl shadowShort mt-2"
-      style="margin-bottom: 3.5%"
+      class="flex justify-center items-center"
     >
-      todo checklist
+     <div class="text-3xl">todolist:</div>
+      <div
+        class="flex justify-center bg-red-200 items-center px-2 text-4xl shadowShort mt-2 ml-3"
+        style="margin-bottom: 3.5%;"
+      >
+        {{todoListDateInfo}}
+      </div>
     </div>
     <div v-if="isMobile" class="relative flex w-10/12 justify-end mb-1 text-xl">
-      <span class="absolute left-0 text-2xl"> progress: {{progress}} </span>
+      <span class="absolute left-0 text-2xl"> progress: {{progress.percentage}} </span>
       <div class="flex items-center">
         <div class="mr-2">
           Public
@@ -29,8 +34,8 @@
       </div>
     </div>
     <div v-else class="relative flex w-10/12 justify-center mb-1 text-xl">
-      <span class="absolute left-0 text-2xl"> progress: {{progress}} </span>
-      <div class="flex items-center">
+      <span class="absolute left-0 text-2xl"> progress: {{progress.ratio}}{{progress.percentage}} </span>
+      <div class="flex items-center z-10">
         <div class="mr-2">
           Public
         </div>
@@ -41,7 +46,7 @@
         />
         <label for="toggle-slider"/>
       </div>
-       <div class="absolute w-full flex justify-end items-center"> -->
+       <div class="absolute w-full flex justify-end items-center"> 
       <button
         class="absolute right-0 bg-blue-300 px-4"
         style="border-radius: 3px; rem;"
@@ -83,6 +88,12 @@
             @toggletodo="toggletodo"
           />
             <!-- @added="added" -->
+        </div>
+        <div 
+          v-if="!haveTodos.length && todos.length"
+          class="text-5xl text-green-300"
+        >
+          Congratulation! What a Great job!
         </div>
       </div>
 
@@ -135,9 +146,12 @@ export default {
       const completedItems = this.todos.reduce((acc, item) => {
         return acc + (item.completed&1)
       }, 0);
-      if(this.isMobile) return `(${(completedItems/this.todos.length*100).toFixed(1)}%)`
-      else return `${completedItems}/${this.todos.length}`
-      + `(${(completedItems/this.todos.length*100).toFixed(1)}%)`
+      return { 
+        percentage: `(${(completedItems/this.todos.length*100).toFixed(1)}%)`,
+        ratio: `${completedItems}/${this.todos.length}`
+      }
+      // else return `$`
+      // + `(${(completedItems/this.todos.length*100).toFixed(1)}%)`
     },
     isMobile() {
       return this.$store.getters["AccountModule/mobile"];
@@ -206,6 +220,7 @@ export default {
       // console.log(JSON.stringify(this.todos.slice(0,keyIdx)))
       // console.log(JSON.stringify(this.todos.slice(keyIdx+1)))
       this.todos = [...this.todos.slice(0, keyIdx), ...this.todos.slice(keyIdx+1)];
+      this.keyPrefix = [...this.keyPrefix.slice(0,keyIdx), ...this.keyPrefix.slice(keyIdx+1)];
       // console.log(JSON.stringify(this.todos));
       // console.log(this.haveTodos);
       // console.log(this.completedTodos);
@@ -221,6 +236,7 @@ export default {
         completed: false,
       })
       this.keyPrefix.push(0);
+      // console.log(this.keyPrefix);
       // this.inputActive = false;
     },
     // added() {
@@ -245,7 +261,7 @@ export default {
           // console.log(todolistDate)
           if(data && data.todolist && Object.keys(data.todolist).length) {
             this.todos = data.todolist[todolistDate].todos
-            this.keyPrefix = Array(Object.keys(data.todolist).length).fill(0);
+            this.keyPrefix = Array(this.todos.length).fill(0);
           }
         });
   },
