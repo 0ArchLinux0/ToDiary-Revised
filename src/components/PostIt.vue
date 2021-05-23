@@ -239,11 +239,13 @@ export default {
     // this.isMobile =this.$store.getters["AccountModule/mobile"]
     if(!this.initial) {
       this.newMemo = this.body;
+      this.newMemo = 'mounted'
       this.$refs.postIt.classList.add('priorityMoveToLeft');
       // this.$refs.postIt.addEventListener('transitionend', () => {
       //   this.$emit('added');
       // })
       setTimeout(() => {
+        this.newMemo = 'set timeout'
         this.$refs.postIt.classList.add('postIt');
       })
     } else {
