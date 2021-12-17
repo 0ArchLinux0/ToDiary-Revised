@@ -6,6 +6,7 @@ const axios = require('axios');
 const loginTokenValidation = require('./loginTokenValidation');
 const https = require("https");
 
+const db = require('./dbManager2.js');
 const dbManagerUrl = "http://localhost:1111";
 // const dbManagerUrl = "http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1111";
 const port = "2083"
@@ -121,16 +122,12 @@ app.post('/content', (req, res) => {
 })
 
 app.get('/accountdata', (req, res) => {
-  const data = req.query;
-  dbManager
-    .get('/readone', {
-      params: {
-        dbname: 'userdata',
-        collection: 'accounts',
-        filter: { _id: data.userOid },
-        toGrab: data.toGrab,
-      },
-    }).then(({ data }) => res.send(data))
+  const { userOid, toGrab } = req.query;
+
+  const projection = {};
+  for(const item of toGrab) projection[item] = 1;
+  db.findOne("userdata", "accounts", { _id: userOid }, projection)
+    .then(({ data }) => res.send(data))
     .catch((err) => {console.log(err); res.sendStatus(404)});
 })
 

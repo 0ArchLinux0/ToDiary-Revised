@@ -4,7 +4,7 @@
       id="title" 
       class="flex justify-center items-center"
     >
-     <div class="text-3xl">todolist:</div>
+     <div class="text-3xl">todolist of</div>
       <div
         class="flex justify-center bg-red-200 items-center px-2 text-4xl shadowShort mt-2 ml-3"
         style="margin-bottom: 3.5%;"
@@ -123,7 +123,7 @@
 </template>
 <script>
 import PostIt from '../components/PostIt.vue'
-// import ContentService from "@/services/ContentService.js"
+import ContentService from "@/services/ContentService.js"
 import AccountService from "@/services/AccountService.js"
 // import md5 from "crypto-js/md5";
 // import Vue from "vue";
@@ -136,10 +136,16 @@ export default {
     msg: String
   },
   computed: {
-    todoListDateInfo() {
+    todaysDate() {
       const date = new Date();
       const temp = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
       return temp.toISOString().split('T')[0];
+    },
+    todoListDateInfo() {
+      return this.$route.params.date;
+    },
+    datArray() {
+      return this.todoListDateInfo.split('-');
     },
     progress() {
       if(!this.todos.length) return `0/0 (0%)` 
@@ -182,36 +188,25 @@ export default {
   },
   methods: {
     save() {
-      // if(!this.todos || !this.todos.length) return;
-      // ContentService.postContent({
-      //   dbname: 'content',
-      //   collection: "postit",
-      //   toWrite: {
-      //     _id: md5(
-      //       this.userInfo.oid + 
-      //       "-" + 
-      //       (new Date().getDate() - this.initialDate.getDate()
-      //     )).toString(),
-      //     todos:this.todos,
-      //     isPublic: this.isPublic,
-      //     viewer: this.viewer,
-      //     savedDate: new Date(),
-      //     owner: this.userInfo.oid,
-      //   }
-      // })
-      const toWrite = {};
-      toWrite[
-        `todolist.${this.todoListDateInfo}`
-      ] = {
-        todos:this.todos,
-        isPublic: this.isPublic,
-        viewer: this.viewer,
-        owner: this.userInfo.oid,
-      }
-      AccountService.setAccountData({
-        oid: this.userInfo.oid,
-        toWrite: toWrite,
+      ContentService.postContent({
+        collection: "todos",
+        content: {
+          todos:this.todos,
+          isPublic: this.isPublic,
+          viewers: this.viewer,
+          owner: this.userInfo.oid,
+          date: {
+            year: this.datArray[0],
+            month: this.datArray[1],
+            day: this.datArray[2]
+          }
+        },
+        todoListId: this.todoListId,
+        useroid: this.userInfo.oid
       })
+      .then(({ data }) => {
+        if(!this.todoListId) this.todoListId = data
+      });
     },
     deleteTodo(keyIdx) {
       // console.log(keyIdx);
@@ -231,9 +226,11 @@ export default {
     },
     addToList(todo) {
       // console.log(todo);
+      if(this.todos.length > 15) return;
       this.todos.push({
         todo: todo,
         completed: false,
+        // isPublic: false,
       })
       this.keyPrefix.push(0);
       // console.log(this.keyPrefix);
@@ -249,30 +246,43 @@ export default {
       this.keyPrefix[idx]=this.keyPrefix[idx]^1;
     }
   },
-  mounted() {
+  async mounted() {
     // console.log(this.$route.query);
-    const todolistDate = this.$route.query.date ? this.$route.query.date : this.todoListDateInfo;
-    // console.log(this.todoListDateInfo)
-    // console.log(todolistDate)
+    console.log('mounted');
+    console.log(this.$route.params);
+    console.log(this.datArray);
+    // const todolistDate = this.todoListDateInfo ? this.todoListDateInfo : this.todaysDate;
+
     if(this.userInfo)
-      AccountService.getInfo(this.userInfo.oid, [`todolist.${todolistDate}`])
-        .then(({ data }) => {
-          // console.log(data);
-          // console.log(todolistDate)
-          if(data && data.todolist && Object.keys(data.todolist).length) {
-            this.todos = data.todolist[todolistDate].todos
-            this.keyPrefix = Array(this.todos.length).fill(0);
-          }
-        });
+      this.todoListId = (await AccountService.getInfo(this.userInfo.oid, [`todoIds.${this.datArray[0]}.${this.datArray[1]}.${this.datArray[2]}`])
+        .catch((e) => { console.log(e); })).data.todoIds[this.datArray[0]][this.datArray[1]][this.datArray[2]];
+    console.log('list id: ' + this.todoListId);
+    if(this.todoListId) {
+      const infos = (await ContentService.getContent({
+        collection: "todos",
+        contentoid: this.todoListId,
+      })).data;
+      this.isPublic = infos.isPublic;
+      this.owner = infos.owner;
+      this.viewers = infos.viewers;
+      this.todos = infos.todos;
+      for(let i = 0; i < this.todos.length; i++) this.keyPrefix.push(0);
+      // console.log(infos);
+    }
   },
   data() {
     return {
       newMemo: "add todo!",
       todos: [],
+      toPush: [],
+      toPop: [],
       // inputActive: true,
       isPublic: false,
       viewer: [],
       keyPrefix: [],
+      todoListId: null,
+      owner: null,
+      viewers: null,
       // todoListDateInfo: undefined,
     }
   }

@@ -24,9 +24,14 @@ const routes = [
         path: 'memo', 
         component: Memo,
       },
+      // { 
+      //   name: 'todo',
+      //   path: 'todo', 
+      //   component: TodoList,
+      // },
       { 
-        name: 'TodoList',
-        path: 'todo', 
+        name: 'todo',
+        path: 'todo/:date', 
         component: TodoList,
       },
       {
