@@ -17,13 +17,13 @@ const apiClient = axios.create({
 });
 
 export default {
-  postContent(contentInfo) {
-    return apiClient.post(`${baseURL}/content`, contentInfo);
+  postContent(content) {
+    return apiClient.post(`${baseURL}/content`, content);
   },
-  getPostit(_id) {
-    // console.log(_id);
-    return apiClient.get(`${baseURL}/postIt`, {
-      params: { _id },
+  getContent(content) {
+    // console.log(content);
+    return apiClient.get(`${baseURL}/content`, {
+      params: content,
     });
   }
   // exists(query) {

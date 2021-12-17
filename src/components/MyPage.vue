@@ -46,7 +46,7 @@ export default {
     msg: String
   },
   computed: {
-    todoListDateInfo() {
+    dateToday() {
       const date = new Date();
       const temp = new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
       return temp.toISOString().split('T')[0];
@@ -56,16 +56,9 @@ export default {
     }
   },
   methods: {
-    // move(menu) {
-    //   // if(user)
-    //   console.log(menu)
-    // },
-    // formatDate(dateString) {
-    //   console.log(dateString)
-    // },
     seeTodoDetails(date) {
       console.log(date)
-      this.$router.push({ name: `TodoList`, query: { date } })
+      this.$router.push({ path: `/todo/${date}` })
     }
   },
   mounted() {

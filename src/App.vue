@@ -2,6 +2,9 @@
   <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
   <router-view
   />
+  <!-- <v-app id="dayspan" v-cloak>
+    <ds-calendar-app :calendar="calendar"></ds-calendar-app>
+  </v-app> -->
 </template>
 
 <script>
@@ -37,11 +40,6 @@ export default {
     });
     document.head.appendChild(googleLoginApi);
   },
-  data() {
-    return {
-      // mobile: false,
-    }
-  }
 }
 </script>
 
@@ -63,20 +61,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* background-color: #fdeec6; */
-  background-image: url("assets/lined-note.jpg");
+  background-color: #c2f7f7;
+  /* background-image: url("assets/lined-note.jpg"); */
   /* background-image: url("assets/pinboard.jpg"); */
-  background-repeat: repeat-y;
+  /* background-repeat: repeat-y; */
   min-height: 100vh;
   /* background-size: contain; */
-  background-size: 100vw 100vh;
+  /* background-size: 100vw 100vh; */
   user-select: none;
 }
-@media screen and (max-width: 400px) {
+/* @media screen and (max-width: 400px) {
   #app {
     background-repeat: repeat;
   }
-}
+} */
 button:hover {
   color: lightgreen;
 }

@@ -1,6 +1,7 @@
 const cors = require("cors");
 const express = require("express");
 const axios = require('axios');
+const db = require('./dbManager2.js');
 // const md5 = require("crypto-js/md5");
 const loginTokenValidation = require('./loginTokenValidation');
 
@@ -15,40 +16,41 @@ app.use(cors());
 // localApp.use(express.json({ limit: "50mb" }));
 // localApp.use(cors());
 
-app.post('/content', (req, res) => {
+app.post('/content', async (req, res) => {
   const data = req.body;
-  // console.log(data);
-  const { collection, contentInfo } = data;
-  // if(data.requestorOid == data.userOid) {
-    // 
-  // }
-  dbManager
-    .post('writeone', data)
-    .then((response) => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.log(err)
-      res.sendStatus(404)
-    });
+  const { collection, content, todoListId, useroid } = data;
+  const { year, month, day } = content.date;
+  const $set = {};
 
-  // loginTokenValidation.verifyToken(token, 'google')
-  //   .then(accountInfo => res.send(accountInfo))
-  //   .catch((err) => {
-  //     if(err==='!registered') res.send('register');
-  //     else res.sendStatus(404)
-  //   })
+  if(todoListId) {
+    $set['todos'] = content.todos;
+    db.updateOne("content", collection, { _id: todoListId }, { $set }, { upsert: false })
+      .then(() => res.sendStatus(200))
+      .catch(() => res.sendStatus(401));
+  } else {
+    const inserted_id = 
+      await db.writeOne("content", collection, content)
+          .catch((e) => { res.sendStatus(401); return; });
+    
+    
+    $set[`todoIds.${year}.${Number(month)}.${Number(day)}`] = inserted_id;
+
+    db.updateOne("userdata", "accounts", { _id: useroid }, { $set }, { upsert: true })
+      .then((_id) => {
+        res.send(inserted_id);
+      })
+      .catch((e) => {
+        res.sendStatus(404);
+      });
+  }
+  
 })
 
-app.get('/postIt', (req, res) => {
-  const _id = req.query._id;
-  // console.log(_id);
-  dbManager
-    .get('readone', { params: { 
-      filter: { _id },
-      dbname: 'content',
-      collection: 'postit', 
-    }}) 
+app.get('/content', (req, res) => {
+  const { collection, contentoid, toGrab } = req.query;
+  const projection = {};
+  if(toGrab) for(const item of toGrab) projection[item] = 1;
+  db.findOne('content', collection, { _id: contentoid }, projection)
     .then((response) => {
       res.send(response);
     })
@@ -56,7 +58,8 @@ app.get('/postIt', (req, res) => {
 })
 
 
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, "0.0.0.0", async () => {
+  await db.connectDB();
   dbManager = axios.create({
     withCredentials: false,
     baseURL: dbManagerUrl,
@@ -66,5 +69,4 @@ app.listen(port, "0.0.0.0", () => {
     },
     timeout: 0,
   });
-  console.log("Public Content API Listening to: " + port);
 });

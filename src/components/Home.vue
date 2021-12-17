@@ -1,79 +1,295 @@
 <template>
-  <div 
-    class="flex flex-col justify-start items-center w-full"
-    style="padding-top: 16%"  
+  <div
+    class="
+      relative
+      flex flex-col
+      justify-around
+      items-center
+      w-full
+      h-full
+      mt-10
+    "
   >
-    <div
-      v-for="(menu, idx) in menus"
-      class="pointer w-1/2"
-      :key="`menu-${idx}`"
-      @click="move(menu.path)"
+    <!-- <v-date-picker locale="en" v-model="date" /> -->
+    <!-- :columns="$screens({ default: 1, lg: 3, xl: 4 })"
+  :rows="$screens({ default: 1, lg: 2, xl: 3 })"
+  :is-expanded="$screens({ default: true, lg: false })" -->
+    <!-- <v-calendar
+      ref="calendar"
+      class="date-picker w-3/4 h-100"
+      locale="en"
+      :columns="layout.columns"
+      :rows="layout.rows"
+      style="height=1200px"
+      v-model="date"
+      :is-expanded="layout.isExpanded"
+      :theme-styles='themeStyles'
+      :attributes='attributes'
+      @change='getEvents'
+    > -->
+    <v-calendar
+      ref="calendar"
+      class="date-picker w-3/4 h-100"
+      locale="en"
+      disable-page-swipe
+      :is-expanded="layout.isExpanded"
+      :attributes="attributes"
+      @update:from-page="update"
     >
-      <div
-        class="mb-10"
-      >
-        <PostIt
-          :body="menu.name"
-          :postitH="6"
-          :preventDefault="true"
-          :textCenter="true"
-          :completed="false"
-        />
-      </div>
-    </div>
+      <!-- @dayclick='dayClicked' -->
+      <!-- <v-date-picker :transition="'none'">
+        <template v-slot="{ inputValue, togglePopover }">
+          <input :value="inputValue"
+             @click="togglePopover({ placement: 'bottom', transition: 'none', showDelay: 0, hideDelay: 0 })"
+          />
+        </template>
+      </v-date-picker> -->
+      <template v-slot:day-content="{ day, attributes }">
+        <div
+          class="flex flex-col h-full overflow-hidden pointer"
+          @click.stop="dayClicked(day)"
+        >
+          <span class="day-label text-sm z-10 text-gray-900"
+            >{{ day.day }} {{ getPercentage(day) }}
+          </span>
+          <div class="flex-grow overflow-hidden">
+            <p
+              v-for="attr in attributes"
+              :key="attr.key"
+              class="-z-10 text-xs leading-tight rounded-sm p-1 mt-0 mb-1"
+              :class="attr.customData.class"
+            >
+              {{ attr.customData.title }}
+            </p>
+          </div>
+        </div>
+      </template>
+    </v-calendar>
   </div>
 </template>
 <script>
-import PostIt from '../components/PostIt.vue'
+import AccountService from "@/services/AccountService.js";
+import ContentService from "@/services/ContentService.js";
 export default {
-  name: 'Home',
-  components: {
-    PostIt,
-  },
+  name: "Home",
+  components: {},
   props: {
-    msg: String
+    msg: String,
   },
   computed: {
+    layout() {
+      return this.$screens({
+        // Default layout for mobile
+        default: {
+          columns: 1,
+          rows: 1,
+          isExpanded: false,
+        },
+        // Override for large screens
+        lg: {
+          columns: 1,
+          rows: 1,
+          isExpanded: false,
+        },
+      });
+    },
+    dateTodayArray() {
+      const date = new Date();
+      const temp = new Date(
+        date.getTime() - date.getTimezoneOffset() * 60 * 1000
+      );
+      return temp.toISOString().split("T")[0].split("-");
+    },
+    attributes() {
+      // return this.todos.map(t => ({
+      //   key: `todo.${t.id}`,
+      //   dot: {
+      //     backgroundColor: t.color,
+      //   },
+      //   dates: t.date,
+      //   customData: t,
+      // }));
+      // console.log(this.todoLists[0]);
+      return this.todoLists;
+      // return  [{
+      //   key: "today",
+      //   // highlight: '#000',
+      //   highlight: true,
+      //   popover: {
+      //     label: 'John Birthday',
+
+      //   },
+      //   dates: new Date()
+      // },
+      // {
+      //   highlight: true,
+      //   popover: {
+      //    label: ['Other event, even2']
+      //   },
+      //   dates: new Date(2021, 11, 13)
+      // },
+      // ]
+    },
     userInfo() {
-      return this.$store.getters["AccountModule/userInfo"]
-    }
+      return this.$store.getters["AccountModule/userInfo"];
+    },
+    // getPercentage() {
+
+    // }
+  },
+  watch: {
+    date: function (newVal, oldVal) {
+      console.log(newVal);
+      console.log(oldVal);
+    },
+    "this.$refs.calendar": function(newVal) {
+      console.log(newVal);
+    },
   },
   methods: {
-    move(menu) {
-      // if(user)
-      if(menu.name == 'memo(will be ready soon...)') return;
-      if(this.userInfo)
-        this.$router.push({ path: `/${menu}` })
-      else this.$router.push({ path:`login`})
-    }
+    getPercentage(day) {
+      const completedItems = this.completeStatus[day.year]?.[day.month]?.[day.day];
+      return completedItems ? `(${(completedItems[0]/(completedItems[0] + completedItems[1])*100).toFixed(0)}%)` : '';
+    },
+    updateInfos(year, month) {
+      return new Promise((resolve, reject) => {
+        if (this.loadedYearMonths[year]?.[month]) {
+          this.currentYearMonth = [year, month];
+          resolve();
+          return;
+        }
+
+        let idx = 1;
+        let todoListIds;
+        if (this.userInfo) {
+          AccountService.getInfo(this.userInfo.oid, [
+            `todoIds.${year}.${month}`,
+          ])
+            .then(({ data }) => {
+              todoListIds = data?.todoIds?.[year]?.[month];
+              console.log('todolist');
+              console.log(todoListIds);
+              if(!todoListIds || todoListIds.length == 0) return reject();
+
+              this.completeStatus[year] = {};
+              this.completeStatus[year][month] = {};
+              const promises = [];
+
+              for (let [day, todoListId] of Object.entries(todoListIds)) {
+                day = Number(day);
+                promises.push(new Promise((resolve, reject) => {
+                  ContentService.getContent({
+                    collection: "todos",
+                    contentoid: todoListId,
+                    toGrab: ["todos"],
+                  }).then(({ data }) => {
+                    const infos = data;
+                    this.completeStatus[year][month][day] = [0, 0];
+                    let compleStatusCnt = this.completeStatus[year][month][day];
+
+                    for (const todoItem of infos.todos) {
+                      todoItem.completed
+                        ? compleStatusCnt[0]++
+                        : compleStatusCnt[1]++;
+
+                      this.todoLists.push({
+                        key: `key-${idx++}`,
+                        isComplete: todoItem.completed,
+                        dates: new Date(year, month - 1, day),
+                        customData: {
+                          title: todoItem.todo,
+                          class: `${this.randomColor()} text-white ${
+                            todoItem.completed ? "line-through" : ""
+                          }`,
+                        },
+                      });
+                    }
+                    resolve();
+                  })
+                  .catch(() => reject());
+                }));
+              }
+
+              Promise.all(promises)
+                .then(() => {
+                  this.loadedYearMonths[year] = {};
+                  this.loadedYearMonths[
+                    [year][month]
+                  ] = true;
+                  return resolve();
+                })
+                .catch(() => {
+                  return reject();
+                });
+            })
+            .catch((e) => {
+              console.log(e);
+              return reject();
+            })
+        } else return reject();
+      });
+    },
+    dayClicked(day) {
+      // console.log(day.id);
+      this.$router.push({ path: `/todo/${day.id}` });
+    },
+    update(event) {
+      console.log(event);
+      const { year, month }  = event;
+      this.currentYearMonth = [year, month];
+
+      this.updateInfos(year, month)
+        .then(() => {
+          return;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    randomColor() {
+      return [
+        "bg-green-500",
+        "bg-blue-400",
+        "bg-yellow-500",
+        "bg-red-300",
+        "bg-purple-500",
+      ][Math.floor(Math.random() * 5)];
+    },
   },
-  mounted() {
-    // console.log(this.$route.params);
-    if(this.$route.params.pushedAfter === 'registered') {
-      // console.log("pushed from register page");
+  async mounted() {
+    console.log(this.$refs.calendar);
+    if (this.$route.params.pushedAfter === "registered") {
       this.congratulate = true;
     }
-    // console.log('store');
-    // console.log(this.$store.getters["AccountModule/userInfo"])
-    // console.log();
+    this.$refs.calendar.focusDate(
+      new Date(this.dateTodayArray[0], [this.dateTodayArray[1]] - 1, [
+        this.dateTodayArray[2],
+      ])
+    );
   },
   data() {
     return {
-      // menus: ["todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo","todo", "memo",]
-      menus: [
-        { 
-          name:"todo list",
-          path:"todo"
-        }, 
-        {
-          name:"memo(will be ready soon...)",
-          path:""
-        }
-      ],
+      themeStyles: {
+        wrapper: {
+          background: "linear-gradient(to bottom right, #ff5050, #ff66b3)",
+          color: "#fafafa",
+          border: "0",
+          borderRadius: "5px",
+          boxShadow:
+            "0 4px 8px 0 rgba(0, 0, 0, 0.14), 0 6px 20px 0 rgba(0, 0, 0, 0.13)",
+        },
+        weekdays: {
+          padding: "20px 50px 5px 50px",
+        },
+      },
       congratulate: false,
-    }
-  }
-}
+      todoLists: [],
+      completeStatus: {},
+      currentYearMonth: [0, 0],
+      loadedYearMonths: {},
+    };
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -81,4 +297,71 @@ export default {
 .pointer {
   cursor: pointer;
 }
+/* lang="postcss" */
+/* /deep/ .custom-calendar.vc-container {
+  --day-border: 1px solid #b8c2cc;
+  --day-border-highlight: 1px solid #b8c2cc;
+  --day-width: 90px;
+  --day-height: 90px;
+  --weekday-bg: #f8fafc;
+  --weekday-border: 1px solid #eaeaea;
+  border-radius: 0;
+  width: 100%;
+  & .vc-header {
+    background-color: #f1f5f8;
+    padding: 10px 0;
+  }
+  & .vc-weeks {
+    padding: 0;
+  }
+  & .vc-weekday {
+    background-color: var(--weekday-bg);
+    border-bottom: var(--weekday-border);
+    border-top: var(--weekday-border);
+    padding: 5px 0;
+  }
+  & .vc-day {
+    padding: 0 5px 3px 5px;
+    text-align: left;
+    height: var(--day-height);
+    min-width: var(--day-width);
+    background-color: white;
+    &.weekday-1,
+    &.weekday-7 {
+      background-color: #eff8ff;
+    }
+    &:not(.on-bottom) {
+      border-bottom: var(--day-border);
+      &.weekday-1 {
+        border-bottom: var(--day-border-highlight);
+      }
+    }
+    &:not(.on-right) {
+      border-right: var(--day-border);
+    }
+  }
+  & .vc-day-dots {
+    margin-bottom: 5px;
+  }
+} */
 </style>
+<style>
+.date-picker .vc-day {
+  min-height: 100px;
+  max-height: 100px;
+  width: 100%;
+}
+.date-picker .vc-weekday {
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+.date-picker .vc-day-box-center-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+</style>
+
+
+
+
