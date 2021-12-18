@@ -1,11 +1,9 @@
 const cors = require("cors");
 const express = require("express");
-const axios = require('axios');
+// const axios = require('axios');
 const db = require('./dbManager2.js');
 // const md5 = require("crypto-js/md5");
-const loginTokenValidation = require('./loginTokenValidation');
 
-const dbManagerUrl = "http://localhost:1111";
 const port = "3083"
 
 const app = express();
@@ -68,14 +66,14 @@ app.get('/content', (req, res) => {
 
 app.listen(port, "0.0.0.0", async () => {
   await db.connectDB();
-  dbManager = axios.create({
-    withCredentials: false,
-    baseURL: dbManagerUrl,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    timeout: 0,
-  });
-  console.log('contentserver connected');
+  // dbManager = axios.create({
+  //   withCredentials: false,
+  //   baseURL: dbManagerUrl,
+  //   headers: {
+  //     Accept: "application/json",
+  //     "Content-Type": "application/json",
+  //   },
+  //   timeout: 0,
+  // });
+  console.log('contentserver connected in port ' + port);
 });
