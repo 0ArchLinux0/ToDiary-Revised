@@ -80,7 +80,7 @@ try {
 }
 
 
-app.listen(port, "0.0.0.0", async () => {
+server.listen(port, "0.0.0.0", async () => {
   await db.connectDB();
   // dbManager = axios.create({
   //   withCredentials: false,
