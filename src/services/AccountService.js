@@ -57,6 +57,8 @@ export default {
               const userEmail = profile.getEmail();
               const googleAccessToken = googleUser.getAuthResponse().id_token;
               console.log(`${baseURL}/login`)
+              console.log(googleUser)
+              console.log(userEmail)
               apiClient.post(`${baseURL}/login`, {
                 token: googleAccessToken,
                 loginAttemptType: "google",
