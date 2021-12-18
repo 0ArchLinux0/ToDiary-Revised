@@ -74,7 +74,9 @@ app.post('/register', (req, res) => {
 
 app.get('/accountdata', (req, res) => {
   const { userOid, toGrab } = req.query;
-
+  console.log('get /accountdata');
+  console.log(userOid);
+  console.log(toGrab);
   const projection = {};
   for(const item of toGrab) projection[item] = 1;
   db.findOne("userdata", "accounts", { _id: userOid }, projection)
