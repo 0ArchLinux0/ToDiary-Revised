@@ -4,11 +4,11 @@ const AccountModule = {
   namespaced: true,
   state: {
     // userInfo: undefined,
-    userInfo: {
-      email: 'bluebluerize900@gmail.com',
-      nickname: 'Admin',
-      oid: '60a4c9f8708c73536cb73f49',
-    },
+    // userInfo: {
+    //   email: 'bluebluerize900@gmail.com',
+    //   nickname: 'Admin',
+    //   oid: '60a4c9f8708c73536cb73f49',
+    // },
     mobile: false,
     // oid, nickname, email
     userOid: undefined,
