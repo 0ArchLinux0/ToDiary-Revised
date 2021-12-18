@@ -153,6 +153,7 @@ export default {
     },
     updateInfos(year, month) {
       console.log('updateinfos ' + year + ' ' + month);
+      console.log(this.userInfo);
       if (this.userInfo)
       return new Promise((resolve, reject) => {
         if (this.loadedYearMonths[year]?.[month]) {
