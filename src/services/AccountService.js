@@ -39,9 +39,6 @@ export default {
   exists(filter) {
     return apiClient.get(`${baseURL}/exists`, { params: filter });
   },
-  postContent(contentInfo) {
-    return apiClient.post(`${baseURL}/content`, contentInfo);
-  },
   register(data) {
     return apiClient.post(`${baseURL}/register`,data);
   },

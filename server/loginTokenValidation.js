@@ -1,5 +1,5 @@
 const axios = require("axios");
-
+const db = require('./dbManager2.js');
 const googleTokenCheckBaseUrl ="https://oauth2.googleapis.com/tokeninfo?id_token=";
 const apiClient = axios.create({
   timeout: 300*60*1000,
@@ -16,10 +16,7 @@ function verifyToken(token, accountType) {
         // console.log('data')
         // console.log(result.data)
         if(!result.data.error && result.status == 200) {
-          const accountQuery = await getAccountWithEmail(result.data.email);
-          // console.log(accountQuery)
-          if(!accountQuery || accountQuery.status == 404) reject('!registered');
-          else resolve(accountQuery.data);
+          return getAccountWithEmail(result.data.email);
         }
         else reject();
       })
@@ -30,18 +27,21 @@ function verifyToken(token, accountType) {
 
 function getAccountWithEmail(email) {
   return new Promise((resolve, reject) => {
-    dbManager
-      .get('/readone', {
-        params: {
-          filter: { email },
-          dbname: 'userdata',
-          collection: 'accounts'
-        }
-      })
-      .then(response => resolve(response))
-      .catch((err) => {
-        resolve(undefined)
-      })
+    db.findOne("userdata", "accounts", { email })
+    .then( data  => resolve(data))
+    .catch((err) => {console.log(err); reject('!registered');});
+    // dbManager
+    //   .get('/readone', {
+    //     params: {
+    //       filter: { email },
+    //       dbname: 'userdata',
+    //       collection: 'accounts'
+    //     }
+    //   })
+    //   .then(response => resolve(response))
+    //   .catch((err) => {
+    //     resolve(undefined)
+    //   })
   })
 }
 
