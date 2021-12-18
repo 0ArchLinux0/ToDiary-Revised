@@ -13,10 +13,15 @@ function verifyToken(token, accountType) {
     if(accountType === 'google') {  
       googleTokenValidationCheck(token).then((result) => {
         // console.log('data')
-        // console.log(result.data)
+        console.log('in token veryfication');
+        console.log(result.data)
         if(!result.data.error && result.status == 200) {
           getAccountWithEmail(result.data.email)
-            .then((data) => { return data; })
+            .then((data) => { 
+              console.log('then data');
+              console.log(data);
+              return data; 
+            })
             .catch(() => { return 'register'; })
         }
         else return;
@@ -28,9 +33,10 @@ function verifyToken(token, accountType) {
 }
 
 function getAccountWithEmail(email) {
+  console.log('mail: ' + email);
   return new Promise((resolve, reject) => {
     db.findOne("userdata", "accounts", { email })
-    .then(data  => resolve(data))
+    .then(data  => {resolve(data))
     .catch((err) => {console.log(err); reject();});
     // dbManager
     //   .get('/readone', {
