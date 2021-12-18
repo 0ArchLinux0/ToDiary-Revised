@@ -5,7 +5,7 @@
 
 -----------------
 caution!
-list of useable port in cloudflare proxy
+compatible ports in cloudflare proxy
 HTTP:
 80
 8080
