@@ -36,7 +36,7 @@ function getAccountWithEmail(email) {
   console.log('mail: ' + email);
   return new Promise((resolve, reject) => {
     db.findOne("userdata", "accounts", { email })
-    .then(data  => {resolve(data))
+    .then(data  => resolve(data))
     .catch((err) => {console.log(err); reject();});
     // dbManager
     //   .get('/readone', {
