@@ -106,7 +106,7 @@ try {
   };
   server = https.createServer(options, app);
 } catch(e) {
-  console.log("contentserver - development mode");
+  console.log("accountserver - development mode");
   console.log(e);
   server = app;
 }
