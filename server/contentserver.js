@@ -48,6 +48,8 @@ app.post('/content', async (req, res) => {
 
 app.get('/content', (req, res) => {
   const { collection, contentoid, toGrab } = req.query;
+  console.log(collection + ' ' + contentoid);
+  console.log(toGrab);
   const projection = {};
   if(toGrab) for(const item of toGrab) projection[item] = 1;
   db.findOne('content', collection, { _id: contentoid }, projection)
