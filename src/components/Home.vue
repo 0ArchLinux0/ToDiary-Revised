@@ -153,6 +153,7 @@ export default {
     },
     updateInfos(year, month) {
       console.log('updateinfos ' + year + ' ' + month);
+      if (this.userInfo)
       return new Promise((resolve, reject) => {
         if (this.loadedYearMonths[year]?.[month]) {
           this.currentYearMonth = [year, month];
@@ -167,6 +168,7 @@ export default {
             `todoIds.${year}.${month}`,
           ])
             .then(({ data }) => {
+              console.log(data);
               todoListIds = data?.todoIds?.[year]?.[month];
               console.log('todolist');
               console.log(todoListIds);
@@ -184,6 +186,8 @@ export default {
                     contentoid: todoListId,
                     toGrab: ["todos"],
                   }).then(({ data }) => {
+                    console.log('get content');
+                    console.log(data);
                     const infos = data;
                     this.completeStatus[year][month][day] = [0, 0];
                     let compleStatusCnt = this.completeStatus[year][month][day];
@@ -236,6 +240,8 @@ export default {
     },
     update(event) {
       console.log(event);
+      console.log(this.todoLists)
+      console.log('-----')
       const { year, month }  = event;
       this.currentYearMonth = [year, month];
 
@@ -259,7 +265,7 @@ export default {
   },
   async mounted() {
     // console.log(this.$refs.calendar);
-    console.log(this.userInfo)
+    // console.log(this.userInfo)
     if (this.$route.params.pushedAfter === "registered") {
       this.congratulate = true;
     }
