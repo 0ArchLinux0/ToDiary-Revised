@@ -16,6 +16,12 @@ app.use(cors());
 // localApp.use(express.json({ limit: "50mb" }));
 // localApp.use(cors());
 
+app.get("/test", ((req, res, next) => {
+  console.log("test http connection");
+  console.log(req.query.fuck);
+  res.send("response");
+}));
+
 app.post('/content', async (req, res) => {
   const data = req.body;
   const { collection, content, todoListId, useroid } = data;
@@ -71,4 +77,5 @@ app.listen(port, "0.0.0.0", async () => {
     },
     timeout: 0,
   });
+  console.log('contentserver connected');
 });
