@@ -10,6 +10,7 @@ function googleTokenValidationCheck(token) {
 }
 
 function verifyToken(token, accountType) {
+  return new Promise((resolve, reject) => {
     if(accountType === 'google') {  
       googleTokenValidationCheck(token).then((result) => {
         // console.log('data')
@@ -19,17 +20,20 @@ function verifyToken(token, accountType) {
           getAccountWithEmail(result.data.email)
             .then((data) => { 
               // console.log('then data');
-              console.log(data);
-              return data; 
+              // console.log(data);
+              // return data; 
+              resolve(data);
             })
-            .catch(() => { return 'register'; })
+            .catch(() => { resolve(0); })
         }
         else return;
       })
       .catch(() => {
-        return ;
+        reject() ;
       })
-    } else return;
+    } else reject();
+  })
+    
 }
 
 function getAccountWithEmail(email) {

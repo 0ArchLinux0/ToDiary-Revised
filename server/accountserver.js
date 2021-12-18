@@ -6,6 +6,7 @@ const loginTokenValidation = require('./loginTokenValidation');
 const https = require("https");
 
 const db = require('./dbManager2.js');
+const { resolveNaptr } = require("dns");
 const port = "2083"
 
 const app = express();
@@ -22,16 +23,19 @@ app.get("/test", ((req, res, next) => {
   res.send("response");
 }));
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const data = req.body;
   // console.log(data);
   const { token, loginAttemptType } = data;
-  const accountInfo = loginTokenValidation.verifyToken(token, 'google')
-  console.log('returned accountInfo');
-  console.log(accountInfo);
-  if(accountInfo === undefined || accountInfo === null) res.sendStatus(404);
-  else if(accountInfo === 'register') res.send('register');
-  else res.send(accountInfo);
+  const accountInfo = 
+    await loginTokenValidation.verifyToken(token, 'google')
+    .catch(() => { 
+      res.sendStatus(404);
+      return;
+    })
+
+  if(accountInfo == 0) res.send('register');
+  else resolve.send(accountInfo); 
 })
 
 // app.post('/readone', (req, res) => {
