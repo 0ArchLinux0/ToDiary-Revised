@@ -1,7 +1,8 @@
 const axios = require("axios");
 
 // let baseURL = `http://ec2-54-180-90-248.ap-northeast-2.compute.amazonaws.com:1000`;
-let baseURL = `http://localhost:3083`
+// let baseURL = `http://localhost:3083`
+let baseURL = `https://api.todiary.ml:3083`
 
 const headers = {
   "Access-Control-Allow-Origin": "*",

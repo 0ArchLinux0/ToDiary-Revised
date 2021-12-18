@@ -7,8 +7,8 @@
       items-center
       w-full
       h-full
-      mt-10
     "
+    style="margin-top: 5vh"
   >
     <!-- <v-date-picker locale="en" v-model="date" /> -->
     <!-- :columns="$screens({ default: 1, lg: 3, xl: 4 })"
@@ -29,7 +29,7 @@
     > -->
     <v-calendar
       ref="calendar"
-      class="date-picker w-3/4 h-100"
+      class="date-picker h-100"
       locale="en"
       disable-page-swipe
       :is-expanded="layout.isExpanded"
@@ -137,15 +137,15 @@ export default {
 
     // }
   },
-  watch: {
-    date: function (newVal, oldVal) {
-      console.log(newVal);
-      console.log(oldVal);
-    },
-    "this.$refs.calendar": function(newVal) {
-      console.log(newVal);
-    },
-  },
+  // watch: {
+  //   date: function (newVal, oldVal) {
+  //     console.log(newVal);
+  //     console.log(oldVal);
+  //   },
+  //   "this.$refs.calendar": function(newVal) {
+  //     console.log(newVal);
+  //   },
+  // },
   methods: {
     getPercentage(day) {
       const completedItems = this.completeStatus[day.year]?.[day.month]?.[day.day];
@@ -347,10 +347,18 @@ export default {
 </style>
 <style>
 .date-picker .vc-day {
-  min-height: 100px;
-  max-height: 100px;
-  width: 100%;
+  height: 11vh;
+  /* width: 80px; */
+  width: 8vw;
 }
+@media (max-width: 979px) {
+  .date-picker .vc-day {
+    max-height: 10vhpx;
+    /* width: 80px; */
+    width: 12vw;
+  }
+}
+
 .date-picker .vc-weekday {
   padding-top: 30px;
   padding-bottom: 20px;
