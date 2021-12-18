@@ -154,7 +154,6 @@ export default {
     updateInfos(year, month) {
       console.log('updateinfos ' + year + ' ' + month);
       console.log(this.userInfo);
-      if (this.userInfo)
       return new Promise((resolve, reject) => {
         if (this.loadedYearMonths[year]?.[month]) {
           this.currentYearMonth = [year, month];
@@ -243,9 +242,9 @@ export default {
       console.log(event);
       console.log(this.todoLists)
       console.log('-----')
+      if(!this.userInfo) return;
       const { year, month }  = event;
-      this.currentYearMonth = [year, month];
-
+      this.currentYearMonth = [year, month];  
       this.updateInfos(year, month)
         .then(() => {
           return;

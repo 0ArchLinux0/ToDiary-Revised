@@ -6,6 +6,7 @@ const loginTokenValidation = require('./loginTokenValidation');
 const https = require("https");
 
 const db = require('./dbManager2.js');
+// const { resolveNaptr } = require("dns");
 const port = "2083"
 
 const app = express();
@@ -22,16 +23,20 @@ app.get("/test", ((req, res, next) => {
   res.send("response");
 }));
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const data = req.body;
-  console.log(data);
+  console.log('post /login');
   const { token, loginAttemptType } = data;
-  loginTokenValidation.verifyToken(token, 'google')
-    .then(accountInfo => res.send(accountInfo))
-    .catch((err) => {
-      if(err==='!registered') res.send('register');
-      else res.sendStatus(404)
+  const accountInfo = 
+    await loginTokenValidation.verifyToken(token, 'google')
+    .catch((e) => { 
+      console.log(e);
+      res.sendStatus(404);
+      return;
     })
+  console.log(accountInfo);
+  if(accountInfo == 0) res.send('register');
+  else res.send(accountInfo); 
 })
 
 // app.post('/readone', (req, res) => {
@@ -70,6 +75,9 @@ app.post('/register', (req, res) => {
 
 app.get('/accountdata', (req, res) => {
   const { userOid, toGrab } = req.query;
+  console.log('get /accountdata');
+  console.log(userOid);
+  console.log(toGrab);
   const projection = {};
   for(const item of toGrab) projection[item] = 1;
   db.findOne("userdata", "accounts", { _id: userOid }, projection)
@@ -99,7 +107,7 @@ try {
   };
   server = https.createServer(options, app);
 } catch(e) {
-  console.log("contentserver - development mode");
+  console.log("accountserver - development mode");
   console.log(e);
   server = app;
 }
