@@ -107,7 +107,8 @@ export default {
     googleLoginRequest() {
       AccountService.requestGoogleLogin()
         .then((data) => {
-          // console.log(data);
+          console.log('after login request')
+          console.log(data);
           if(data.mode === 'register') {
             this.processRegisteration = true;
             this.email = data.email;

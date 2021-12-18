@@ -1,9 +1,9 @@
 const axios = require("axios");
 
 // let baseURL = `https://ec2-52-79-233-153.ap-northeast-2.compute.amazonaws.com:2083`;
-let baseURL = `https://api.todiary.ml:2083`;
+// let baseURL = `https://api.todiary.ml:2083`;
  
-// let baseURL = `http://localhost:2083`
+let baseURL = `http://localhost:2083`
 
 const headers = {
   "Access-Control-Allow-Origin": "*",

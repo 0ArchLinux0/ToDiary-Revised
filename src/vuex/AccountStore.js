@@ -3,7 +3,7 @@
 const AccountModule = {
   namespaced: true,
   state: {
-    // userInfo: undefined,
+    userInfo: undefined,
     // userInfo: {
     //   email: 'bluebluerize900@gmail.com',
     //   nickname: 'Admin',
