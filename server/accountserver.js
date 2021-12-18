@@ -24,18 +24,12 @@ app.get("/test", ((req, res, next) => {
 
 app.post('/login', (req, res) => {
   const data = req.body;
-  console.log('in post /login')
   console.log(data);
   const { token, loginAttemptType } = data;
-  loginTokenValidation.verifyToken(token, 'google')
-    .then(accountInfo => {
-      console.log(accountInfo);
-      res.send(accountInfo)
-    })
-    .catch((err) => {
-      if(err==='!registered') res.send('register');
-      else res.sendStatus(404)
-    })
+  const accountInfo = loginTokenValidation.verifyToken(token, 'google')
+  if(accountInfo === undefined || accountInfo === null) res.sendStatus(404);
+  else if(accountInfo === 'register') res.send('register');
+  else res.send(accountInfo);
 })
 
 // app.post('/readone', (req, res) => {
@@ -51,8 +45,6 @@ app.post('/login', (req, res) => {
 
 app.post('/accountdata', (req, res) => {
   const dataToSet = req.body;
-  console.log('in /accountdata');
-  console.log(dataToSet);
     db.updateOne('userdata', 'accounts', { _id: dataToSet.oid }, { $set: dataToSet.toWrite })
       .then(response => res.sendStatus(200))
       .catch((err) => {
@@ -64,11 +56,8 @@ app.post('/accountdata', (req, res) => {
 
 app.post('/register', (req, res) => {
   const data = req.body;
-  console.log('in register');
-  console.log(data);
   db.writeOne('userdata', 'accounts', data)
   .then( data => {
-    console.log(data);
     res.send(data);
   })
   .catch((err) => {
@@ -82,12 +71,8 @@ app.get('/accountdata', (req, res) => {
 
   const projection = {};
   for(const item of toGrab) projection[item] = 1;
-  console.log('in /accountdata: oid and tograb' + userOid + ' ' + toGrab);
   db.findOne("userdata", "accounts", { _id: userOid }, projection)
-    .then(({ data }) => {
-      console.log(data);
-      res.send(data)
-    })
+    .then(({ data }) => res.send(data))
     .catch((err) => {console.log(err); res.sendStatus(404)});
 })
 

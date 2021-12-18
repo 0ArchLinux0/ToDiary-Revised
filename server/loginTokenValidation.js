@@ -10,26 +10,28 @@ function googleTokenValidationCheck(token) {
 }
 
 function verifyToken(token, accountType) {
-  return new Promise((resolve, reject) => {
     if(accountType === 'google') {  
-      googleTokenValidationCheck(token).then(async (result) => {
+      googleTokenValidationCheck(token).then((result) => {
         // console.log('data')
         // console.log(result.data)
         if(!result.data.error && result.status == 200) {
-          return getAccountWithEmail(result.data.email);
+          getAccountWithEmail(result.data.email)
+            .then((data) => { return data; })
+            .catch(() => { return 'register'; })
         }
-        else reject();
+        else return;
       })
-      .catch(() => reject())
-    } else reject();
-  })
+      .catch(() => {
+        return ;
+      })
+    } else return;
 }
 
 function getAccountWithEmail(email) {
   return new Promise((resolve, reject) => {
     db.findOne("userdata", "accounts", { email })
-    .then( data  => resolve(data))
-    .catch((err) => {console.log(err); reject('!registered');});
+    .then(data  => resolve(data))
+    .catch((err) => {console.log(err); reject();});
     // dbManager
     //   .get('/readone', {
     //     params: {
