@@ -35,7 +35,7 @@ app.post('/login', async (req, res) => {
     })
 
   if(accountInfo == 0) res.send('register');
-  else resolve.send(accountInfo); 
+  else res.send(accountInfo); 
 })
 
 // app.post('/readone', (req, res) => {
