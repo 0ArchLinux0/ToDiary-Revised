@@ -80,7 +80,7 @@ app.get('/accountdata', (req, res) => {
   const projection = {};
   for(const item of toGrab) projection[item] = 1;
   db.findOne("userdata", "accounts", { _id: userOid }, projection)
-    .then(({ data }) => res.send(data))
+    .then( data  => res.send(data))
     .catch((err) => {console.log(err); res.sendStatus(404)});
 })
 
