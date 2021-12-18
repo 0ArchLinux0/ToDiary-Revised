@@ -13,12 +13,12 @@ function verifyToken(token, accountType) {
     if(accountType === 'google') {  
       googleTokenValidationCheck(token).then((result) => {
         // console.log('data')
-        console.log('in token veryfication');
-        console.log(result.data)
+        // console.log('in token veryfication');
+        // console.log(result.data)
         if(!result.data.error && result.status == 200) {
           getAccountWithEmail(result.data.email)
             .then((data) => { 
-              console.log('then data');
+              // console.log('then data');
               console.log(data);
               return data; 
             })

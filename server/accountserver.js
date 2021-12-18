@@ -24,9 +24,11 @@ app.get("/test", ((req, res, next) => {
 
 app.post('/login', (req, res) => {
   const data = req.body;
-  console.log(data);
+  // console.log(data);
   const { token, loginAttemptType } = data;
   const accountInfo = loginTokenValidation.verifyToken(token, 'google')
+  console.log('returned accountInfo');
+  console.log(accountInfo);
   if(accountInfo === undefined || accountInfo === null) res.sendStatus(404);
   else if(accountInfo === 'register') res.send('register');
   else res.send(accountInfo);
