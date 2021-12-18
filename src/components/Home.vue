@@ -152,6 +152,7 @@ export default {
       return completedItems ? `(${(completedItems[0]/(completedItems[0] + completedItems[1])*100).toFixed(0)}%)` : '';
     },
     updateInfos(year, month) {
+      console.log('updateinfos ' + year + ' ' + month);
       return new Promise((resolve, reject) => {
         if (this.loadedYearMonths[year]?.[month]) {
           this.currentYearMonth = [year, month];
@@ -257,7 +258,8 @@ export default {
     },
   },
   async mounted() {
-    console.log(this.$refs.calendar);
+    // console.log(this.$refs.calendar);
+    console.log(this.userInfo)
     if (this.$route.params.pushedAfter === "registered") {
       this.congratulate = true;
     }
