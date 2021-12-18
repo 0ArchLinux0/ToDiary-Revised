@@ -188,6 +188,7 @@ export default {
   },
   methods: {
     save() {
+      if(!this.todos || this.todos.length === 0) return;
       ContentService.postContent({
         collection: "todos",
         content: {
