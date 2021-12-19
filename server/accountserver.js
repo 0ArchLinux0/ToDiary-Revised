@@ -36,7 +36,7 @@ app.post('/login', async (req, res) => {
       return;
     })
   console.log(accountInfo);
-  if(accountInfo == 0) res.send('register');
+  if(accountInfo == null) res.send('register');
   else res.send(accountInfo); 
 })
 
