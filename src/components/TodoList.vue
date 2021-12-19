@@ -142,10 +142,10 @@ export default {
       return temp.toISOString().split('T')[0];
     },
     todoListDateInfo() {
-      return this.$route.params.date;
+      return this.$route.params.date ? this.$route.params.date : this.todaysDate;
     },
     datArray() {
-      return this.todoListDateInfo.split('-');
+      return this.todoListDateInfo.split('-').map(e => Number(e));
     },
     progress() {
       if(!this.todos.length) return `0/0 (0%)` 
