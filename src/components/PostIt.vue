@@ -37,7 +37,7 @@
         </div>
         <div
           v-if="!preventDefault"
-          class="absolute bg-yellow-300 w-5 h-5 "
+          class="absolute bg-yellow-300 w-5 h-5 text-sm"
           style="left:95%; border-radius: 50%"
           :style="{
             'top':`${postitH * 2/7}rem`,
@@ -108,7 +108,7 @@
         />
         <div
           v-if="!preventDefault"
-          class="absolute bg-red-300 w-5 h-5 "
+          class="absolute bg-red-300 w-5 h-5 text-sm"
           style="left:95%; border-radius: 50%"
           :style="{
             'top':`${postitH * 2/7}rem`,

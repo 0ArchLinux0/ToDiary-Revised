@@ -185,17 +185,32 @@ export default {
                         ? compleStatusCnt[0]++
                         : compleStatusCnt[1]++;
 
-                      this.todoLists.push({
-                        key: `key-${idx++}`,
-                        isComplete: todoItem.completed,
-                        dates: new Date(year, month - 1, day),
-                        customData: {
-                          title: todoItem.todo,
-                          class: `${this.randomColor()} text-white ${
-                            todoItem.completed ? "line-through" : ""
-                          }`,
-                        },
-                      });
+                      if(todoItem.completed) {
+                        this.todoLists.push({
+                          key: `key-${idx++}`,
+                          dates: new Date(year, month - 1, day),
+                          customData: {
+                            title: todoItem.todo,
+                            class: `${this.randomColor()} text-white ${
+                              todoItem.completed ? "line-through" : ""
+                            }`,
+                          },
+                        });
+                        compleStatusCnt[0]++;
+                      } else {
+                        this.todoLists.unshift({
+                          key: `key-${idx++}`,
+                          dates: new Date(year, month - 1, day),
+                          customData: {
+                            title: todoItem.todo,
+                            class: `${this.randomColor()} text-white ${
+                              todoItem.completed ? "line-through" : ""
+                            }`,
+                          },
+                        });
+                        compleStatusCnt[1]++;
+                      }
+                      
                     }
                     resolve();
                   })

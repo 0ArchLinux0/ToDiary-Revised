@@ -4,37 +4,16 @@
       id="title" 
       class="flex justify-center items-center"
     >
-     <div class="text-3xl">todolist of</div>
+     <div class="text-xl">todolist of</div>
       <div
-        class="flex justify-center bg-red-200 items-center px-2 text-4xl shadowShort mt-2 ml-3"
+        class="flex justify-center bg-red-200 items-center px-2 text-3xl shadowShort mt-2 ml-3"
         style="margin-bottom: 3.5%;"
       >
         {{todoListDateInfo}}
       </div>
     </div>
-    <div v-if="isMobile" class="relative flex w-10/12 justify-end mb-1 text-xl">
-      <span class="absolute left-0 text-2xl"> progress: {{progress.percentage}} </span>
-      <div class="flex items-center">
-        <div class="mr-2">
-          Public
-        </div>
-        <input 
-          type="checkbox"
-          :checked="isPublic"
-          id="toggle-slider"
-        />
-        <label for="toggle-slider"/>
-        <button
-          class="bg-blue-300 px-4 ml-2"
-          style="border-radius: 3px; rem;"
-          @click="save"
-        >
-          save
-        </button>
-      </div>
-    </div>
-    <div v-else class="relative flex w-10/12 justify-center mb-1 text-xl">
-      <span class="absolute left-0 text-2xl"> progress: {{progress.ratio}}{{progress.percentage}} </span>
+    <div v-if="isMobile" class="relative flex w-10/12 justify-between mb-1 text-xl">
+      <div class="left-0 text-2xl"> progress: {{progress.percentage}} </div>
       <div class="flex items-center z-10">
         <div class="mr-2">
           Public
@@ -46,15 +25,34 @@
         />
         <label for="toggle-slider"/>
       </div>
-       <div class="absolute w-full flex justify-end items-center"> 
       <button
-        class="absolute right-0 bg-blue-300 px-4"
+          class="bg-blue-300 px-4 ml-2"
+          style="border-radius: 3px;"
+          @click="save"
+        >
+        save
+      </button>
+    </div>
+    <div v-else class="relative flex w-10/12 justify-between mb-1 text-xl">
+      <div class=" left-0 text-xl"> progress: {{progress.ratio}}{{progress.percentage}} </div>
+      <div class="flex items-center z-10">
+        <div class="mr-2">
+          Public
+        </div>
+        <input 
+          type="checkbox"
+          :checked="isPublic"
+          id="toggle-slider"
+        />
+        <label for="toggle-slider"/>
+      </div>
+      <button
+        class="right-0 bg-blue-300 px-4"
         style="border-radius: 3px; rem;"
         @click="save"
       >
         save
       </button> 
-      </div>
     </div> 
     <div
       class="relative w-full"
@@ -73,7 +71,7 @@
         class="relative w-full text-xl my-5"
         style="min-height: 200px"
       >
-        ---------Have to do---------
+        <span class="text-white">---------Have to do---------</span>
         <div
           v-for="todo of haveTodos"
           :key="`${keyPrefix[todo.idx]}-haveTodo-${todo.idx}`"
@@ -101,7 +99,7 @@
         class="relative w-full text-xl mt-5"
       >
         <!-- style="min-height: 200px" -->
-        ---------Completed!---------
+        <span style="color: rgb(253 164 175);">---------Completed!---------</span>
         <div
           v-for="todo of completedTodos"
           :key="`${keyPrefix[todo.idx]}-complete-${todo.idx}`"
@@ -207,6 +205,13 @@ export default {
       })
       .then(({ data }) => {
         if(!this.todoListId) this.todoListId = data
+        this.$toast.open({
+          position: 'top',
+          message: "Saved!",
+          type: "success",
+          duration: 1300,
+          dismissible: true
+        })
       });
     },
     deleteTodo(keyIdx) {
@@ -299,6 +304,8 @@ input {
 }
 input:focus {
   color: grey;
+  outline: none;
+  border: none;
 }
 #toggle-slider { display: none;}
 label {

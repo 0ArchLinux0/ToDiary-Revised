@@ -7,7 +7,7 @@
         id="topMenuBar"
         class="w-full flex justify-center pt-1"
       >
-        <div v-if="showWelcomeMsg && userInfo" class="absolute left-5 hoverClass">
+        <div v-if="showWelcomeMsg && userInfo" class="absolute left-5">
           Welcome! {{userInfo.nickname}}
           <!-- <router-link to="/policy">Policy</router-link> -->
         </div>
