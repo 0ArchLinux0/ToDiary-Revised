@@ -63,7 +63,7 @@ export default {
                 token: googleAccessToken,
                 loginAttemptType: "google",
               })
-                .then(({ data }) => {
+                .then(data => {
                   console.log(data);
                   if (data === 'register') resolve(
                     {
