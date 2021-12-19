@@ -89,7 +89,8 @@ app.get('/accountdata', (req, res) => {
 app.get('/exists', (req, res) => {
   const filter = req.query;
   // const filter = JSON.stringify(req.query);
-  db.findOne("userdata", "accounts", filter, projection)
+  //project
+  db.findOne("userdata", "accounts", filter)
     .then(({ data }) => res.send('1'))
     .catch((err) => { res.sendStatus('0'); });
 
