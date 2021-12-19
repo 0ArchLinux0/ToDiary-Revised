@@ -107,21 +107,21 @@ app.get('/exists', (req, res) => {
 })
 
 
-// let server;
-// try {
-//   options = {
-//     cert: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-cert.pem")),
-//     key: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-private.key")),
-//   };
-//   server = https.createServer(options, app);
-// } catch(e) {
-//   console.log("accountserver - development mode");
-//   console.log(e);
-//   server = app;
-// }
+let server;
+try {
+  options = {
+    cert: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-cert.pem")),
+    key: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-private.key")),
+  };
+  server = https.createServer(options, app);
+} catch(e) {
+  console.log("accountserver - development mode");
+  console.log(e);
+  server = app;
+}
 
 
-app.listen(port, "0.0.0.0", async () => {
+server.listen(port, "0.0.0.0", async () => {
   await db.connectDB();
   console.log("Public Account API Listening to: " + port);
   // localApp.listen(localApiPort, () => {

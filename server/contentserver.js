@@ -67,21 +67,21 @@ app.get('/content', (req, res) => {
     .catch((err) => res.sendStatus(404));
 })
 
-// let server;
-// try {
-//   options = {
-//     cert: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-cert.pem")),
-//     key: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-private.key")),
-//   };
-//   server = https.createServer(options, app);
-// } catch(e) {
-//   console.log("contentserver - development mode");
-//   console.log(e);
-//   server = app;
-// }
+let server;
+try {
+  options = {
+    cert: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-cert.pem")),
+    key: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-private.key")),
+  };
+  server = https.createServer(options, app);
+} catch(e) {
+  console.log("contentserver - development mode");
+  console.log(e);
+  server = app;
+}
 
 
-app.listen(port, "0.0.0.0", async () => {
+server.listen(port, "0.0.0.0", async () => {
   await db.connectDB();
   // dbManager = axios.create({
   //   withCredentials: false,
