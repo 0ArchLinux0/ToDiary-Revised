@@ -16,6 +16,7 @@ app.use(cors());
 // const localApp = express();
 // localApp.use(express.json({ limit: "50mb" }));
 // localApp.use(cors());
+if(process.env.NODE_ENV === 'production') console.log = {};
 
 app.get("/test", ((req, res, next) => {
   console.log("test http connection");
