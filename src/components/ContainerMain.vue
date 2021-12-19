@@ -5,10 +5,10 @@
     >
       <div 
         id="topMenuBar"
-        class="w-full flex justify-center text-xl bg-yellow-3 pt-1"
+        class="w-full flex justify-center pt-1"
       >
-        <div class="absolute left-5 hoverClass">
-          <router-link to="/contact">Contact</router-link>
+        <div v-if="showWelcomeMsg && userInfo" class="absolute left-5 hoverClass">
+          Welcome! {{userInfo.nickname}}
           <!-- <router-link to="/policy">Policy</router-link> -->
         </div>
         <div class="hoverClass">
@@ -19,7 +19,7 @@
           class="flex flex-col justify-start items-end absolute right-5 z-20"
           @mouseenter="mypageHover=true"
           @mouseleave="mypageHover=false"
-        >
+        > 
           <button>
             <router-link to="/mypage">My page</router-link>
           </button>
@@ -40,17 +40,16 @@
       </div>
         <!-- :mobile="mobile" -->
     </div>
-    <div v-if="showWelcomeMsg && userInfo" class="relative w-full bg-white">
-      <div class="absolute left-5 text-xl">
-        Welcome! {{userInfo.nickname}}
-      </div>
-    </div> 
     <router-view
     />
     <!-- absolute left-5 -->
-    <div class="absolute w-full bottom-0 hoverClass text-xl">
-      <!-- <router-link to="/contact">Contact</router-link> -->
-      <router-link to="/policy">Policy</router-link>
+    <div class="absolute w-full px-1/2 bottom-0 flex justify-around">
+      <div class="hoverClass">
+        <router-link to="/policy">Policy</router-link>
+      </div>
+      <div class="hoverClass">
+        <router-link to="/contact">Contact</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -58,7 +57,6 @@
 export default {
   name: 'ContainerMain',
   props: {
-    // msg: String
   },
   computed: {
     userInfo() {
@@ -77,12 +75,12 @@ export default {
   data() {
     return {
       mypageHover: false,
-      showWelcomeMsg: false,
+      showWelcomeMsg: true,
     }
   },
   mounted() {
     // console.log("memo")
-    this.showWelcomeMsg = this.$route.query.welcomeMsg;
+    // this.showWelcomeMsg = this.$route.query.welcomeMsg;
   }
 }
 </script>
@@ -96,5 +94,7 @@ button {
   border: none;
   outline: none;
   user-select: none;
+  font-weight: 500;
+  font-size: 16px;
 }
 </style>

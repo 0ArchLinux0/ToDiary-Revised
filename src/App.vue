@@ -44,10 +44,10 @@ export default {
 </script>
 
 <style>
-@font-face {
+/* @font-face {
   font-family: 'HiMelody-Regular';
   src: url(./assets/HiMelody-Regular.ttf) format('truetype'); 
-}
+} */
 body {
   position: relative;
   /* min-height: 100vh; */
@@ -55,13 +55,16 @@ body {
   /* background-color: yellowgreen;  */
 }
 #app {
-  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
-  font-family: 'HiMelody-Regular';
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* font-family: 'HiMelody-Regular'; */
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  background-color: #c2f7f7;
+  color: #2d3748;
+  background-color: #f5d4dc;
+  font-weight: 500;
+  font-size: 16px;
   /* background-image: url("assets/lined-note.jpg"); */
   /* background-image: url("assets/pinboard.jpg"); */
   /* background-repeat: repeat-y; */
@@ -83,9 +86,8 @@ button:hover {
   outline: none;
   user-select: none;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 10px;
-  /* height: 9px; */
   border-radius: 4px;
   cursor: pointer;
   background-color: white;
@@ -93,13 +95,12 @@ button:hover {
 }
 ::-webkit-scrollbar-button {
   display: none;
-}
-::-webkit-scrollbar-thumb {
-  /* overflow: overlay; */
+} */
+/* ::-webkit-scrollbar-thumb {
   height: 2px;
-  opacity: 0;
+  opacity: 0; */
   /* background-color: rgb(154, 235, 255); */
-  background-color: rgba(0, 0, 0, 0.445);
+  /* background-color: rgba(0, 0, 0, 0.445);
   border-radius: 4px;
-}
+} */
 </style>

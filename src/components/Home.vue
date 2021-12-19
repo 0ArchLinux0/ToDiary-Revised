@@ -31,6 +31,7 @@
       ref="calendar"
       class="date-picker h-100"
       locale="en"
+      :theme-styles='themeStyles'
       disable-page-swipe
       :is-expanded="layout.isExpanded"
       :attributes="attributes"
@@ -49,14 +50,14 @@
           class="flex flex-col h-full overflow-hidden pointer"
           @click.stop="dayClicked(day)"
         >
-          <span class="day-label text-sm z-10 text-gray-900"
+          <span class="text-sm z-10 text-gray-900"
             >{{ day.day }} {{ getPercentage(day) }}
           </span>
           <div class="flex-grow overflow-hidden">
             <p
               v-for="attr in attributes"
               :key="attr.key"
-              class="-z-10 text-xs leading-tight rounded-sm p-1 mt-0 mb-1"
+              class="-z-10 text-xs rounded-sm p-1 mt-0 mb-1"
               :class="attr.customData.class"
             >
               {{ attr.customData.title }}
@@ -133,19 +134,7 @@ export default {
     userInfo() {
       return this.$store.getters["AccountModule/userInfo"];
     },
-    // getPercentage() {
-
-    // }
   },
-  // watch: {
-  //   date: function (newVal, oldVal) {
-  //     console.log(newVal);
-  //     console.log(oldVal);
-  //   },
-  //   "this.$refs.calendar": function(newVal) {
-  //     console.log(newVal);
-  //   },
-  // },
   methods: {
     getPercentage(day) {
       const completedItems = this.completeStatus[day.year]?.[day.month]?.[day.day];
@@ -168,7 +157,6 @@ export default {
             `todoIds.${year}.${month}`,
           ])
             .then(({ data }) => {
-              console.log(data);
               todoListIds = data?.todoIds?.[year]?.[month];
               console.log('todolist');
               console.log(todoListIds);
@@ -217,10 +205,8 @@ export default {
 
               Promise.all(promises)
                 .then(() => {
-                  this.loadedYearMonths[year] = {};
-                  this.loadedYearMonths[
-                    [year][month]
-                  ] = true;
+                  if(this.loadedYearMonths[year] == null) this.loadedYearMonths[year] = {};
+                  this.loadedYearMonths[year][month] = true;
                   return resolve();
                 })
                 .catch(() => {
@@ -241,6 +227,7 @@ export default {
     update(event) {
       console.log(event);
       console.log(this.todoLists)
+      console.log(this.loadedYearMonths)
       console.log('-----')
       if(!this.userInfo) return;
       const { year, month }  = event;
@@ -278,17 +265,21 @@ export default {
   data() {
     return {
       themeStyles: {
-        wrapper: {
-          background: "linear-gradient(to bottom right, #ff5050, #ff66b3)",
-          color: "#fafafa",
-          border: "0",
-          borderRadius: "5px",
-          boxShadow:
-            "0 4px 8px 0 rgba(0, 0, 0, 0.14), 0 6px 20px 0 rgba(0, 0, 0, 0.13)",
-        },
-        weekdays: {
-          padding: "20px 50px 5px 50px",
-        },
+        // wrapper: {
+        //   background: "linear-gradient(to bottom right, #ff5050, #ff66b3)",
+        //   color: "#fafafa",
+        //   border: "0",
+        //   borderRadius: "5px",
+        //   boxShadow:
+        //     "0 4px 8px 0 rgba(0, 0, 0, 0.14), 0 6px 20px 0 rgba(0, 0, 0, 0.13)",
+        // },
+        wrapper: { 
+          background: 'linear-gradient(to bottom right, #ff5050, #ff66b3)',
+          color: '#fafafa' 
+        }
+        // weekdays: {
+        //   padding: "20px 50px 5px 50px",
+        // },
       },
       congratulate: false,
       todoLists: [],
@@ -358,6 +349,10 @@ export default {
   height: 11vh;
   /* width: 80px; */
   width: 8vw;
+}
+.vc-pane-container {
+  background: linear-gradient(to bottom right, #ff5050, #ff66b3);
+  color: #fafafa;
 }
 @media (max-width: 979px) {
   .date-picker .vc-day {

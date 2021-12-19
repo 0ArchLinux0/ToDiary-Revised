@@ -16,6 +16,7 @@ app.use(cors());
 // const localApp = express();
 // localApp.use(express.json({ limit: "50mb" }));
 // localApp.use(cors());
+if(process.env.NODE_ENV === 'production') console.log = {};
 
 app.get("/test", ((req, res, next) => {
   console.log("test http connection");
@@ -35,7 +36,7 @@ app.post('/login', async (req, res) => {
       return;
     })
   console.log(accountInfo);
-  if(accountInfo == 0) res.send('register');
+  if(accountInfo === null) res.send('register');
   else res.send(accountInfo); 
 })
 
@@ -88,9 +89,16 @@ app.get('/accountdata', (req, res) => {
 app.get('/exists', (req, res) => {
   const filter = req.query;
   // const filter = JSON.stringify(req.query);
-  db.findOne("userdata", "accounts", filter, projection)
-    .then(({ data }) => res.send('1'))
-    .catch((err) => { res.sendStatus('0'); });
+  //project!!!
+  db.findOne("userdata", "accounts", filter)
+    .then(data => {
+      if(data == null) res.send('0');
+      else res.send('1');
+    })
+    .catch((err) => { 
+      console.log(err);
+      res.sendStatus(404); 
+    });
 
     // if(err.response.status == 404) res.send('0')
     // else {
@@ -99,21 +107,21 @@ app.get('/exists', (req, res) => {
 })
 
 
-let server;
-try {
-  options = {
-    cert: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-cert.pem")),
-    key: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-private.key")),
-  };
-  server = https.createServer(options, app);
-} catch(e) {
-  console.log("accountserver - development mode");
-  console.log(e);
-  server = app;
-}
+// let server;
+// try {
+//   options = {
+//     cert: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-cert.pem")),
+//     key: fs.readFileSync(path.resolve(__dirname, "./ssl/cloudflare-private.key")),
+//   };
+//   server = https.createServer(options, app);
+// } catch(e) {
+//   console.log("accountserver - development mode");
+//   console.log(e);
+//   server = app;
+// }
 
 
-server.listen(port, "0.0.0.0", async () => {
+app.listen(port, "0.0.0.0", async () => {
   await db.connectDB();
   console.log("Public Account API Listening to: " + port);
   // localApp.listen(localApiPort, () => {
