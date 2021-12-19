@@ -36,7 +36,7 @@ app.post('/login', async (req, res) => {
       return;
     })
   console.log(accountInfo);
-  if(accountInfo == null) res.send('register');
+  if(accountInfo === null) res.send('register');
   else res.send(accountInfo); 
 })
 
@@ -89,10 +89,16 @@ app.get('/accountdata', (req, res) => {
 app.get('/exists', (req, res) => {
   const filter = req.query;
   // const filter = JSON.stringify(req.query);
-  //project
+  //project!!!
   db.findOne("userdata", "accounts", filter)
-    .then(({ data }) => res.send('1'))
-    .catch((err) => { res.sendStatus('0'); });
+    .then(data => {
+      if(data == null) res.send('0');
+      else res.send('1');
+    })
+    .catch((err) => { 
+      console.log(err);
+      res.sendStatus(404); 
+    });
 
     // if(err.response.status == 404) res.send('0')
     // else {
