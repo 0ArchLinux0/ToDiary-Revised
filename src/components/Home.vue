@@ -202,7 +202,7 @@ export default {
                       if(todoItem.completed) {
                         this.todoLists.push({
                           key: `key-${idx++}`,
-                          dates: new Date.UTC(year, month - 1, day),
+                          dates: new Date(Date.UTC(year, month - 1, day)),
                           customData: {
                             title: todoItem.todo,
                             class: `${this.randomColor()} text-white ${
@@ -214,7 +214,7 @@ export default {
                       } else {
                         this.todoLists.unshift({
                           key: `key-${idx++}`,
-                          dates: new Date(year, month - 1, day),
+                          dates: new Date(Date.UTC(year, month - 1, day)),
                           customData: {
                             title: todoItem.todo,
                             class: `${this.randomColor()} text-white ${
