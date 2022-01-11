@@ -14,6 +14,7 @@ const AccountModule = {
     userOid: undefined,
     todoLists: {},
     currentPlayingContentIndex: 0,
+    focusDate: undefined,
   },
   mutations: {
     UPDATE_USERINFO(state, userInfo){
@@ -22,13 +23,16 @@ const AccountModule = {
     UPDATE_MOBILE(state,isMobile) {
       state.mobile = isMobile;
     },
-    UPDATE_TOODS(state,todoObj) {
+    UPDATE_TODOS(state,todoObj) {
       const { year, month, todos } = todoObj;
       console.log('vuex' + month);
       console.log(todos);
       if(!state.todoLists[year]) state.todoLists[year] = {};
       state.todoLists[year][month] = todos;
-    }
+    },
+    UPDATE_FOCUSDATE(state,focusDate) {
+      state.focusDate = focusDate;
+    },
   },
   getters: {
     userInfo: (state) => {
@@ -39,6 +43,9 @@ const AccountModule = {
     },
     todos: (state) => {
       return state.todoLists;
+    },
+    focusDate: (state) => {
+      return state.focusDate;
     }
     // currentReferer: (state) => {
     //   return state.referer;
@@ -58,7 +65,11 @@ const AccountModule = {
       commit("UPDATE_MOBILE", isMobile);
     },
     storeTodos({ commit }, todoObj) {
-      commit("UPDATE_TOODS", todoObj);
+      commit("UPDATE_TODOS", todoObj);
+    },
+    updateFocusDate({ commit }, focusDate) {
+      commit("UPDATE_FOCUSDATE", focusDate);
+      console.log(focusDate);
     },
     
     // updateCurrentPlayingContentIndex({ commit }, index) {

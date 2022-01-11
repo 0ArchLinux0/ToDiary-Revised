@@ -94,12 +94,16 @@ export default {
         },
       });
     },
-    dateTodayArray() {
+    dateToFocus() {
+      console.log(this.$store.getters["AccountModule/focusDate"]);
+      if(this.$store.getters["AccountModule/focusDate"]) 
+        return this.$store.getters["AccountModule/focusDate"];
       const date = new Date();
       const temp = new Date(
         date.getTime() - date.getTimezoneOffset() * 60 * 1000
       );
-      return temp.toISOString().split("T")[0].split("-");
+      const splited = temp.toISOString().split("T")[0].split("-");
+      return { year: splited[0], month: splited[1] }
     },
     attributes() {
       // return this.todos.map(t => ({
@@ -261,6 +265,9 @@ export default {
       console.log('-----')
       if(!this.userInfo) return;
       const { year, month }  = event;
+      console.log(this.init);
+      if(!this.init) this.$store.dispatch("AccountModule/updateFocusDate", { year, month });
+      else this.init = false;
       console.log(this.todoInfo);
       console.log(this.todoInfo[year]);
       if(this.todoInfo[year] && this.todoInfo[year][month]) {
@@ -295,9 +302,7 @@ export default {
       this.congratulate = true;
     }
     this.$refs.calendar.focusDate(
-      new Date(this.dateTodayArray[0], [this.dateTodayArray[1]] - 1, [
-        this.dateTodayArray[2],
-      ])
+      new Date(this.dateToFocus.year, [this.dateToFocus.month] - 1 )
     );
   },
   data() {
@@ -324,6 +329,7 @@ export default {
       completeStatus: {},
       currentYearMonth: [0, 0],
       loadedYearMonths: {},
+      init: true,
     };
   },
 };
