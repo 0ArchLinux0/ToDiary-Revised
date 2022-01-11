@@ -134,6 +134,9 @@ export default {
     userInfo() {
       return this.$store.getters["AccountModule/userInfo"];
     },
+    todoInfo() {
+      return this.$store.getters["AccountModule/todos"];
+    },
   },
   methods: {
     getPercentage(day) {
@@ -160,7 +163,14 @@ export default {
               todoListIds = data?.todoIds?.[year]?.[month];
               console.log('todolist');
               console.log(todoListIds);
-              if(!todoListIds || todoListIds.length == 0) return reject();
+              if(!todoListIds || todoListIds.length == 0) {
+                this.$store.dispatch("AccountModule/storeTodos", {
+                  todos: {},
+                  year,
+                  month
+                });
+                return resolve();
+              }
 
               this.completeStatus[year] = {};
               this.completeStatus[year][month] = {};
@@ -222,6 +232,11 @@ export default {
                 .then(() => {
                   if(this.loadedYearMonths[year] == null) this.loadedYearMonths[year] = {};
                   this.loadedYearMonths[year][month] = true;
+                  this.$store.dispatch("AccountModule/storeTodos", {
+                    todos: this.todoLists,
+                    year,
+                    month
+                  });
                   return resolve();
                 })
                 .catch(() => {
@@ -246,6 +261,14 @@ export default {
       console.log('-----')
       if(!this.userInfo) return;
       const { year, month }  = event;
+      console.log(this.todoInfo);
+      console.log(this.todoInfo[year]);
+      if(this.todoInfo[year] && this.todoInfo[year][month]) {
+        console.log('cached');
+        this.todoLists = this.todoInfo[year][month];
+        return;
+      }
+      console.log('loading');
       this.currentYearMonth = [year, month];  
       this.updateInfos(year, month)
         .then(() => {

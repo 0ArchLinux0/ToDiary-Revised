@@ -12,6 +12,7 @@ const AccountModule = {
     mobile: false,
     // oid, nickname, email
     userOid: undefined,
+    todoLists: {},
     currentPlayingContentIndex: 0,
   },
   mutations: {
@@ -20,6 +21,13 @@ const AccountModule = {
     },
     UPDATE_MOBILE(state,isMobile) {
       state.mobile = isMobile;
+    },
+    UPDATE_TOODS(state,todoObj) {
+      const { year, month, todos } = todoObj;
+      console.log('vuex' + month);
+      console.log(todos);
+      if(!state.todoLists[year]) state.todoLists[year] = {};
+      state.todoLists[year][month] = todos;
     }
   },
   getters: {
@@ -29,6 +37,9 @@ const AccountModule = {
     mobile: (state) => {
       return state.mobile;
     },
+    todos: (state) => {
+      return state.todoLists;
+    }
     // currentReferer: (state) => {
     //   return state.referer;
     // },
@@ -45,7 +56,11 @@ const AccountModule = {
     },
     updateMobile({ commit }, isMobile) {
       commit("UPDATE_MOBILE", isMobile);
-    }
+    },
+    storeTodos({ commit }, todoObj) {
+      commit("UPDATE_TOODS", todoObj);
+    },
+    
     // updateCurrentPlayingContentIndex({ commit }, index) {
     //   commit("WRITE_CONTENT_INDEX", index);
 
