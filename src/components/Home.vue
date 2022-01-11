@@ -202,7 +202,7 @@ export default {
                       if(todoItem.completed) {
                         this.todoLists.push({
                           key: `key-${idx++}`,
-                          dates: new Date(year, month - 1, day),
+                          dates: new Date.UTC(year, month - 1, day),
                           customData: {
                             title: todoItem.todo,
                             class: `${this.randomColor()} text-white ${
@@ -272,7 +272,10 @@ export default {
       console.log(this.todoInfo[year]);
       if(this.todoInfo[year] && this.todoInfo[year][month]) {
         console.log('cached');
-        this.todoLists = this.todoInfo[year][month];
+        // this.todoLists = this.todoInfo[year][month].map(e => {
+        //   e.dates = new Date(e.dates.getYear(), e.dates.getMonth(), e.dates.getDay());
+        // });
+        this.todoLists = this.todoInfo[year][month]
         return;
       }
       console.log('loading');
