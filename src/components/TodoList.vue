@@ -71,7 +71,8 @@
         class="relative w-full text-xl my-5"
         style="min-height: 200px"
       >
-        <span class="text-white">---------Have to do---------</span>
+        <!-- <span class="text-white">---------Have to do---------</span> -->
+        <span style="color: rgb(253 164 175);">---------Have to do---------</span>
         <div
           v-for="todo of haveTodos"
           :key="`${keyPrefix[todo.idx]}-haveTodo-${todo.idx}`"
