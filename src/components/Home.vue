@@ -309,7 +309,7 @@ export default {
       month: this.dateToFocus.month - 1
     });
     this.$refs.calendar.focusDate(
-      new Date(this.dateToFocus.year, this.dateToFocus.month - 1)
+      new Date(this.dateToFocus.year, this.dateToFocus.month)
     );
 
   },
@@ -398,7 +398,7 @@ export default {
 </style>
 <style>
 .date-picker .vc-day {
-  height: 11vh;
+  height: 12vh;
   /* width: 80px; */
   width: 8vw;
 }

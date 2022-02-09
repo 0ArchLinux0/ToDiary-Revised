@@ -211,7 +211,13 @@ export default {
           type: "success",
           duration: 1300,
           dismissible: true
-        })
+        });
+
+        this.$store.dispatch("AccountModule/clearTodosMonth", 
+        {
+          year: this.datArray[0],
+          month: this.datArray[1],
+        });
       });
     },
     deleteTodo(keyIdx) {

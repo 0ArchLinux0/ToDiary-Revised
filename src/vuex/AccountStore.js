@@ -30,8 +30,12 @@ const AccountModule = {
       if(!state.todoLists[year]) state.todoLists[year] = {};
       state.todoLists[year][month] = todos;
     },
-    CLEAR_TODOS(state) {
+    CLEAR_TODOS_ALL(state) {
       state.todoLists = {};
+    },
+    CLEAR_TODOS(state, yearAndMonth) {
+      const { year, month } = yearAndMonth;
+      if(state.todoLists[year]) state.todoLists[year][month] = null;
     },
     UPDATE_FOCUSDATE(state, focusDate) {
       state.focusDate = focusDate;
@@ -70,8 +74,11 @@ const AccountModule = {
     storeTodos({ commit }, todoObj) {
       commit("UPDATE_TODOS", todoObj);
     },
-    clearTodos({ commit }) {
-      commit("CLEAR_TODOS");
+    clearTodosAll({ commit }) {
+      commit("CLEAR_TODOS_ALL");
+    },
+    clearTodosMonth({ commit }, yearAndMonth) {
+      commit("CLEAR_TODOS", yearAndMonth);
     },
     updateFocusDate({ commit }, focusDate) {
       commit("UPDATE_FOCUSDATE", focusDate);
