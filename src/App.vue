@@ -22,6 +22,8 @@ export default {
     let isMobile;
     if (navigator.platform) isMobile = filter.indexOf(navigator.platform.toLowerCase()) < 0;
     this.$store.dispatch("AccountModule/updateMobile", isMobile);
+    this.$store.dispatch("AccountModule/updateFocusDate", undefined);
+    this.$store.dispatch("AccountModule/clearTodos");
 
     const googleLoginApi = document.createElement("script");
     googleLoginApi.setAttribute(

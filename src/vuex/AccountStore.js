@@ -20,17 +20,20 @@ const AccountModule = {
     UPDATE_USERINFO(state, userInfo){
       state.userInfo = userInfo;
     },
-    UPDATE_MOBILE(state,isMobile) {
+    UPDATE_MOBILE(state, isMobile) {
       state.mobile = isMobile;
     },
-    UPDATE_TODOS(state,todoObj) {
+    UPDATE_TODOS(state, todoObj) {
       const { year, month, todos } = todoObj;
       console.log('vuex' + month);
       console.log(todos);
       if(!state.todoLists[year]) state.todoLists[year] = {};
       state.todoLists[year][month] = todos;
     },
-    UPDATE_FOCUSDATE(state,focusDate) {
+    CLEAR_TODOS(state) {
+      state.todoLists = {};
+    },
+    UPDATE_FOCUSDATE(state, focusDate) {
       state.focusDate = focusDate;
     },
   },
@@ -66,6 +69,9 @@ const AccountModule = {
     },
     storeTodos({ commit }, todoObj) {
       commit("UPDATE_TODOS", todoObj);
+    },
+    clearTodos({ commit }) {
+      commit("CLEAR_TODOS");
     },
     updateFocusDate({ commit }, focusDate) {
       commit("UPDATE_FOCUSDATE", focusDate);

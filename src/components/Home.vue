@@ -304,9 +304,14 @@ export default {
     if (this.$route.params.pushedAfter === "registered") {
       this.congratulate = true;
     }
+    this.update({
+      year: this.dateToFocus.year,
+      month: this.dateToFocus.month - 1
+    });
     this.$refs.calendar.focusDate(
-      new Date(this.dateToFocus.year, [this.dateToFocus.month] - 1 )
+      new Date(this.dateToFocus.year, this.dateToFocus.month - 1)
     );
+
   },
   data() {
     return {
