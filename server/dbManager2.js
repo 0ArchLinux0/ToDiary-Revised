@@ -3,7 +3,7 @@ const ObjectId = require("mongodb").ObjectId;
 const db = {};
 
 
-const uri = 'mongodb+srv://minjun:4e@!fHNQCuG!VbG@cluster0.5qorl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const uri = 'mongodb+srv://bluebluerize900:qlalfqjsgh0@cluster0.t26mju5.mongodb.net/';
 
 if (!uri) console.log("MONGODB CONNECTION STRING NOT DEFINED");
 
