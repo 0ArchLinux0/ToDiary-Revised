@@ -248,18 +248,18 @@ const getTest = async (email) => {
   console.log(data);
 }
 
-app.listen(port, '0.0.0.0', async () => {
-  await db.connectDB();
-  getTest("ibm@intern.com");
-  getTest("abc@email.com");
-});
-
-// app.listen(port, "0.0.0.0", ()=>{ 
-// 	console.log("started db server");
-// 	mongodb.connect(function(err) {
-// 		if(!err) console.log("mongodb connected");
-// 		else console.log(err);
-// 		db["userdata"] = mongodb.db("userdata");
-// 		db["content"] = mongodb.db("content");
-// 	})
+// app.listen(port, '0.0.0.0', async () => {
+//   await db.connectDB();
+//   getTest("ibm@intern.com");
+//   getTest("abc@email.com");
 // });
+
+app.listen(port, "0.0.0.0", ()=>{ 
+	console.log("started db server");
+	mongodb.connect(function(err) {
+		if(!err) console.log("mongodb connected");
+		else console.log(err);
+		db["userdata"] = mongodb.db("userdata");
+		db["content"] = mongodb.db("content");
+	})
+});
